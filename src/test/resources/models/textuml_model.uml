@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_0" name="textuml_model" URI="textuml/textuml_model">
+  <eAnnotations xmi:id="_com.abstratt2Fmdd2F" source="com.abstratt/mdd/">
+    <details xmi:id="_com.abstratt2Fmdd2F-_details.0" key="dateCreated" value="2014/07/17 11:47:01 821 +0300"/>
+  </eAnnotations>
+  <packagedElement xmi:type="uml:Package" xmi:id="primitives" name="primitives">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-string" name="string"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-int" name="int"/>
+    <packagedElement xmi:type="uml:DataType" xmi:id="primitives-URI" name="URI">
+      <eAnnotations xmi:id="primitives-URI-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+        <details xmi:id="primitives-URI-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+      </eAnnotations>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="primitives-Gender" name="Gender">
+      <ownedLiteral xmi:id="primitives-Gender-Male" name="Male"/>
+      <ownedLiteral xmi:id="primitives-Gender-Female" name="Female"/>
+      <ownedLiteral xmi:id="primitives-Gender-Unknown" name="Unknown"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="Identifiable" name="Identifiable">
+    <eAnnotations xmi:id="Identifiable-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Identifiable-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="Identifiable-identifier" name="identifier" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Identifiable-identifier-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Identifiable-identifier-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Identifiable-name" name="name" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Identifiable-name-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Identifiable-name-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="Characteristic" clientDependency="Characteristic-_interfaceRealization.0" name="Characteristic">
+    <eAnnotations xmi:id="Characteristic-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Characteristic-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="Characteristic-description" name="description" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Characteristic-description-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Characteristic-description-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Characteristic-DType" name="DType" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Characteristic-DType-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Characteristic-DType-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Characteristic-nonnavi_memberowned" name="nonnavi_memberowned" visibility="public" type="Individual" association="asso3">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Characteristic-nonnavi_memberowned-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Characteristic-nonnavi_memberowned-_upperValue" value="1"/>
+    </ownedAttribute>
+    <interfaceRealization xmi:id="Characteristic-_interfaceRealization.0" client="Characteristic" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="Individual" clientDependency="Individual-_interfaceRealization.0" name="Individual">
+    <eAnnotations xmi:id="Individual-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Individual-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="Individual-gender" name="gender" visibility="public" type="primitives-Gender">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Individual-gender-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Individual-gender-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Individual-navi_memberowned" name="navi_memberowned" visibility="public" type="Characteristic" association="asso3">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Individual-navi_memberowned-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Individual-navi_memberowned-_upperValue" value="1"/>
+    </ownedAttribute>
+    <interfaceRealization xmi:id="Individual-_interfaceRealization.0" client="Individual" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="EntityClass" name="EntityClass">
+    <eAnnotations xmi:id="EntityClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="EntityClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="EntityClass-_generalization.0" general="Characteristic"/>
+    <ownedAttribute xmi:id="EntityClass-homepage" name="homepage" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EntityClass-homepage-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EntityClass-homepage-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="AbstractClass" clientDependency="_packagedElement.7" name="AbstractClass" isAbstract="true">
+    <eAnnotations xmi:id="AbstractClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="AbstractClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="AbstractClass-_generalization.0" general="Characteristic"/>
+    <ownedAttribute xmi:id="AbstractClass-test" name="test" visibility="private" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AbstractClass-test-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AbstractClass-test-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AbstractClass-ref1" name="ref1" visibility="public" type="Individual" association="_packagedElement.6">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AbstractClass-ref1-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AbstractClass-ref1-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.6" memberEnd="AbstractClass-ref1 _packagedElement.6-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.6-_ownedEnd.0" type="AbstractClass" association="_packagedElement.6"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_packagedElement.7" client="AbstractClass" supplier="primitives-URI"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="StructuralFeature" name="StructuralFeature">
+    <eAnnotations xmi:id="StructuralFeature-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="StructuralFeature-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="textuml_model.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="StructuralFeature-_generalization.0" general="Characteristic"/>
+    <ownedAttribute xmi:id="StructuralFeature-homepage" name="homepage" visibility="public" type="primitives-URI">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="StructuralFeature-homepage-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="StructuralFeature-homepage-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="asso1" name="asso1" memberEnd="asso1-navi_assoowned asso1-nonnavi_assoowned" navigableOwnedEnd="asso1-navi_assoowned">
+    <ownedEnd xmi:id="asso1-navi_assoowned" name="navi_assoowned" type="StructuralFeature" association="asso1">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="asso1-navi_assoowned-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso1-navi_assoowned-_upperValue" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="asso1-nonnavi_assoowned" name="nonnavi_assoowned" type="EntityClass" association="asso1">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso1-nonnavi_assoowned-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso1-nonnavi_assoowned-_upperValue" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="asso2" name="asso2" memberEnd="asso2-navi1_assoowned asso2-navi2_assoowned" navigableOwnedEnd="asso2-navi1_assoowned asso2-navi2_assoowned">
+    <ownedEnd xmi:id="asso2-navi1_assoowned" name="navi1_assoowned" type="StructuralFeature" association="asso2">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="asso2-navi1_assoowned-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso2-navi1_assoowned-_upperValue" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="asso2-navi2_assoowned" name="navi2_assoowned" type="Characteristic" association="asso2">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="asso2-navi2_assoowned-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso2-navi2_assoowned-_upperValue" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="asso3" name="asso3" memberEnd="Individual-navi_memberowned Characteristic-nonnavi_memberowned"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="asso4" name="asso4" memberEnd="asso4-navi_assoowned_agg asso4-nonnavi_assoowned_agg" navigableOwnedEnd="asso4-navi_assoowned_agg">
+    <ownedEnd xmi:id="asso4-navi_assoowned_agg" name="navi_assoowned_agg" type="Individual" aggregation="shared" association="asso4">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="asso4-navi_assoowned_agg-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso4-navi_assoowned_agg-_upperValue" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="asso4-nonnavi_assoowned_agg" name="nonnavi_assoowned_agg" type="EntityClass" association="asso4">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso4-nonnavi_assoowned_agg-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="asso4-nonnavi_assoowned_agg-_upperValue" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

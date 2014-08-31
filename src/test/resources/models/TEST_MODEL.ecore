@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Model" nsPrefix="Model" nsURI="http://Model/1.0">
+	<eSubpackages name="Class Model">
+		<eSubpackages name="Package1">
+			<eClassifiers xsi:type="ecore:EClass" name="ClassX">
+				<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" name="roleClass4" eType="#//Class%20Model/Class4" eOpposite="#//Class%20Model/Class4/roleClassX"/>
+				<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" upperBound="-1" name="targetRoleClassY" eType="#//Class%20Model/Package1/ClassY" containment="true" eOpposite="#//Class%20Model/Package1/ClassY/sourceRoleClassX"/>
+			</eClassifiers>
+			<eClassifiers xsi:type="ecore:EClass" name="ClassY">
+				<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" upperBound="-1" name="targetRoleClass2" eType="#//Class%20Model/Class2" eOpposite="#//Class%20Model/Class2/sourceRoleClassy"/>
+				<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" eType="#//Class%20Model/Class1" eOpposite="#//Class%20Model/Class1/@eStructuralFeatures.3"/>
+				<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" name="sourceRoleClassX" eType="#//Class%20Model/Package1/ClassX" eOpposite="#//Class%20Model/Package1/ClassX/targetRoleClassY"/>
+			</eClassifiers>
+			<eClassifiers xsi:type="ecore:EClass" name="ClassZ"/>
+		</eSubpackages>
+		<eClassifiers xsi:type="ecore:EClass" name="Class1" eSuperTypes="#//Class%20Model/Class2">
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" name="attrib4" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="#//Class%20Model/Class2" name="attrib5" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" name="roleClass4" eType="#//Class%20Model/Class4" eOpposite="#//Class%20Model/Class4/@eStructuralFeatures.0"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" eType="#//Class%20Model/Package1/ClassY" eOpposite="#//Class%20Model/Package1/ClassY/@eStructuralFeatures.1"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" upperBound="-1" name="role1" eType="#//Class%20Model/Class3" eOpposite="#//Class%20Model/Class3/role2"/>
+		</eClassifiers>
+		<eClassifiers xsi:type="ecore:EClass" name="Class2">
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" name="attrib1" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" name="attrib2" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble" name="attrib3" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" lowerBound="1" name="sourceRoleClassy" eType="#//Class%20Model/Package1/ClassY" eOpposite="#//Class%20Model/Package1/ClassY/targetRoleClass2"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" name="roleClass1" eType="#//Class%20Model/Interface1" eOpposite="#//Class%20Model/Interface1/roleClass2"/>
+		</eClassifiers>
+		<eClassifiers xsi:type="ecore:EClass" name="Class3">
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="#//Class%20Model/DataType1" name="attrubute1" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" eType="#//Class%20Model/Interface1" eOpposite="#//Class%20Model/Interface1/@eStructuralFeatures.1"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" upperBound="-1" name="role2" eType="#//Class%20Model/Class1" eOpposite="#//Class%20Model/Class1/role1"/>
+		</eClassifiers>
+		<eClassifiers xsi:type="ecore:EClass" name="Class4">
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" eType="#//Class%20Model/Class1" eOpposite="#//Class%20Model/Class1/roleClass4"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" upperBound="-1" name="roleClassX" eType="#//Class%20Model/Package1/ClassX" eOpposite="#//Class%20Model/Package1/ClassX/roleClass4"/>
+		</eClassifiers>
+		<eClassifiers xsi:type="ecore:EClass" name="Interface1">
+			<eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" name="attrib6" lowerBound="1" upperBound="1" defaultValueLiteral="" transient="false" derived="false" ordered="false" changeable="true"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" eType="#//Class%20Model/Class3" eOpposite="#//Class%20Model/Class3/@eStructuralFeatures.1"/>
+			<eStructuralFeatures xsi:type="ecore:EReference" ordered="false" name="roleClass2" eType="#//Class%20Model/Class2" eOpposite="#//Class%20Model/Class2/roleClass1"/>
+		</eClassifiers>
+		<eClassifiers xsi:type="ecore:EDataType" name="DataType1"/>
+	</eSubpackages>
+</ecore:EPackage>

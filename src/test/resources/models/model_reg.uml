@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_0" name="model_reg" URI="molgenis-model-registry/model_reg">
+  <eAnnotations xmi:id="_com.abstratt2Fmdd2F" source="com.abstratt/mdd/">
+    <details xmi:id="_com.abstratt2Fmdd2F-_details.0" key="dateCreated" value="2014/08/11 11:59:55 507 +0300"/>
+  </eAnnotations>
+  <ownedComment xmi:id="_ownedComment.0" annotatedElement="_0">
+    <body> Conceptual model for the model registry </body>
+  </ownedComment>
+  <packagedElement xmi:type="uml:Package" xmi:id="primitives" name="primitives">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-string" name="string"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-int" name="int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-URI" name="URI"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-boolean" name="boolean"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="primitives-dateTime" name="dateTime"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="primitives-Aggregation" name="Aggregation">
+      <ownedLiteral xmi:id="primitives-Aggregation-composite" name="composite"/>
+      <ownedLiteral xmi:id="primitives-Aggregation-shared" name="shared"/>
+      <ownedLiteral xmi:id="primitives-Aggregation-none" name="none"/>
+      <ownedLiteral xmi:id="primitives-Aggregation-undefined" name="undefined"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="Identifiable" name="Identifiable">
+    <eAnnotations xmi:id="Identifiable-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Identifiable-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="Identifiable-identifier" name="identifier" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Identifiable-identifier-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Identifiable-identifier-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Identifiable-name" name="name" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Identifiable-name-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Identifiable-name-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="OntologyTerm" clientDependency="OntologyTerm-_interfaceRealization.0" name="OntologyTerm">
+    <eAnnotations xmi:id="OntologyTerm-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="OntologyTerm-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="OntologyTerm-ontology_identifier" name="ontology_identifier" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="OntologyTerm-ontology_identifier-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="OntologyTerm-ontology_identifier-_upperValue" value="1"/>
+    </ownedAttribute>
+    <interfaceRealization xmi:id="OntologyTerm-_interfaceRealization.0" client="OntologyTerm" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="Organization" clientDependency="Organization-_interfaceRealization.0" name="Organization">
+    <eAnnotations xmi:id="Organization-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Organization-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="Organization-_ownedComment.0" annotatedElement="Organization">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <ownedAttribute xmi:id="Organization-email" name="email" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Organization-email-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Organization-email-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="Organization-address" name="address" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Organization-address-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="Organization-address-_upperValue" value="1"/>
+    </ownedAttribute>
+    <interfaceRealization xmi:id="Organization-_interfaceRealization.0" client="Organization" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="RegistrationAuthority" name="RegistrationAuthority">
+    <eAnnotations xmi:id="RegistrationAuthority-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="RegistrationAuthority-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="RegistrationAuthority-_ownedComment.0" annotatedElement="RegistrationAuthority">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <generalization xmi:id="RegistrationAuthority-_generalization.0" general="Organization"/>
+    <ownedAttribute xmi:id="RegistrationAuthority-nameSpace" name="nameSpace" visibility="public" type="primitives-string">
+      <ownedComment xmi:id="RegistrationAuthority-nameSpace-_ownedComment.0" annotatedElement="RegistrationAuthority-nameSpace">
+        <body> Namespace authority maintains</body>
+      </ownedComment>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="RegistrationAuthority-nameSpace-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="RegistrationAuthority-nameSpace-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="Contact" clientDependency="Contact-_interfaceRealization.0" name="Contact">
+    <eAnnotations xmi:id="Contact-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Contact-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="Contact-_ownedComment.0" annotatedElement="Contact">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <interfaceRealization xmi:id="Contact-_interfaceRealization.0" client="Contact" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="Registrar" name="Registrar">
+    <eAnnotations xmi:id="Registrar-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="Registrar-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="Registrar-_ownedComment.0" annotatedElement="Registrar">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <generalization xmi:id="Registrar-_generalization.0" general="Contact"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="registration" name="registration" memberEnd="registration-registrar registration-authority" navigableOwnedEnd="registration-registrar registration-authority">
+    <ownedComment xmi:id="registration-_ownedComment.0" annotatedElement="registration">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <ownedEnd xmi:id="registration-registrar" name="registrar" type="Registrar" association="registration">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="registration-registrar-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="registration-registrar-_upperValue" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="registration-authority" name="authority" type="RegistrationAuthority" association="registration">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="registration-authority-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="registration-authority-_upperValue" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="AdiministeredItem" clientDependency="AdiministeredItem-_interfaceRealization.0" name="AdiministeredItem" isAbstract="true">
+    <eAnnotations xmi:id="AdiministeredItem-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="AdiministeredItem-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="AdiministeredItem-_ownedComment.0" annotatedElement="AdiministeredItem">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <ownedAttribute xmi:id="AdiministeredItem-creationDate" name="creationDate" visibility="public" type="primitives-dateTime">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AdiministeredItem-creationDate-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AdiministeredItem-creationDate-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AdiministeredItem-modificatDate" name="modificatDate" visibility="public" type="primitives-dateTime">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AdiministeredItem-modificatDate-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AdiministeredItem-modificatDate-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AdiministeredItem-authority" name="authority" visibility="public" type="RegistrationAuthority" association="_packagedElement.9">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AdiministeredItem-authority-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AdiministeredItem-authority-_upperValue" value="*"/>
+    </ownedAttribute>
+    <interfaceRealization xmi:id="AdiministeredItem-_interfaceRealization.0" client="AdiministeredItem" supplier="Identifiable" contract="Identifiable"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.9" memberEnd="AdiministeredItem-authority _packagedElement.9-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.9-_ownedEnd.0" type="AdiministeredItem" association="_packagedElement.9"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="StewardshipRecord" name="StewardshipRecord">
+    <eAnnotations xmi:id="StewardshipRecord-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="StewardshipRecord-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="StewardshipRecord-_ownedComment.0" annotatedElement="StewardshipRecord">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <ownedAttribute xmi:id="StewardshipRecord-steward" name="steward" visibility="public" type="Organization">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="StewardshipRecord-steward-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="StewardshipRecord-steward-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="StewardshipRecord-stewardContact" name="stewardContact" visibility="public" type="Contact">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="StewardshipRecord-stewardContact-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="StewardshipRecord-stewardContact-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="stewardship" name="stewardship" memberEnd="stewardship-stewardedItem stewardship-stewardshipRecord" navigableOwnedEnd="stewardship-stewardedItem stewardship-stewardshipRecord">
+    <ownedComment xmi:id="stewardship-_ownedComment.0" annotatedElement="stewardship">
+      <body> ISO 11179 </body>
+    </ownedComment>
+    <ownedEnd xmi:id="stewardship-stewardedItem" name="stewardedItem" type="AdiministeredItem" association="stewardship">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="stewardship-stewardedItem-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="stewardship-stewardedItem-_upperValue" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="stewardship-stewardshipRecord" name="stewardshipRecord" type="StewardshipRecord" association="stewardship">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="stewardship-stewardshipRecord-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="stewardship-stewardshipRecord-_upperValue" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="ItemClass" name="ItemClass" isAbstract="true">
+    <eAnnotations xmi:id="ItemClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="ItemClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="ItemClass-_ownedComment.0" annotatedElement="ItemClass">
+      <body> Super class of all administered registry entities </body>
+    </ownedComment>
+    <generalization xmi:id="ItemClass-_generalization.0" general="AdiministeredItem"/>
+    <ownedAttribute xmi:id="ItemClass-type" name="type" visibility="public" type="OntologyTerm">
+      <ownedComment xmi:id="ItemClass-type-_ownedComment.0" annotatedElement="ItemClass-type">
+        <body> typing system should support type hierarchies (one parent).   </body>
+      </ownedComment>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="ItemClass-type-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="ItemClass-type-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="PackageClass" name="PackageClass">
+    <eAnnotations xmi:id="PackageClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="PackageClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="PackageClass-_ownedComment.0" annotatedElement="PackageClass">
+      <body> Collection of related entities. Type can package or model </body>
+    </ownedComment>
+    <generalization xmi:id="PackageClass-_generalization.0" general="ItemClass"/>
+    <ownedAttribute xmi:id="PackageClass-description" name="description" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="PackageClass-description-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="PackageClass-description-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="PackageClass-parentPackage" name="parentPackage" visibility="public" type="PackageClass" association="_packagedElement.14">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="PackageClass-parentPackage-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="PackageClass-parentPackage-_upperValue" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.14" memberEnd="PackageClass-parentPackage _packagedElement.14-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.14-_ownedEnd.0" type="PackageClass" association="_packagedElement.14"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="EntityClass" name="EntityClass">
+    <eAnnotations xmi:id="EntityClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="EntityClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="EntityClass-_generalization.0" general="ItemClass"/>
+    <ownedAttribute xmi:id="EntityClass-parentClass" name="parentClass" visibility="public" type="EntityClass" association="_packagedElement.16">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="EntityClass-parentClass-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EntityClass-parentClass-_upperValue" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="EntityClass-packageClass" name="packageClass" visibility="public" type="PackageClass" association="_packagedElement.17">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="EntityClass-packageClass-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EntityClass-packageClass-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.16" memberEnd="EntityClass-parentClass _packagedElement.16-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.16-_ownedEnd.0" type="EntityClass" association="_packagedElement.16"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.17" memberEnd="EntityClass-packageClass _packagedElement.17-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.17-_ownedEnd.0" type="EntityClass" association="_packagedElement.17"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="CharacteristicClass" name="CharacteristicClass" isAbstract="true">
+    <eAnnotations xmi:id="CharacteristicClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="CharacteristicClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="CharacteristicClass-_generalization.0" general="ItemClass"/>
+    <ownedAttribute xmi:id="CharacteristicClass-entityClass" name="entityClass" visibility="public" type="EntityClass" association="_packagedElement.19">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="CharacteristicClass-entityClass-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="CharacteristicClass-entityClass-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.19" memberEnd="CharacteristicClass-entityClass _packagedElement.19-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.19-_ownedEnd.0" type="CharacteristicClass" association="_packagedElement.19"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="OWLPropertyEndClass" name="OWLPropertyEndClass">
+    <eAnnotations xmi:id="OWLPropertyEndClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="OWLPropertyEndClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="OWLPropertyEndClass-_ownedComment.0" annotatedElement="OWLPropertyEndClass">
+      <body>  Named end of OWL Property. 
+    entityClass -> EntityClass (owlObjectProperty, owlDatatypeProperty, owlAnnotationProperty)
+    domain -> EntityClass (owlClass...)
+    range  -> EntityClass (owlClass...) 
+</body>
+    </ownedComment>
+    <generalization xmi:id="OWLPropertyEndClass-_generalization.0" general="CharacteristicClass"/>
+    <ownedAttribute xmi:id="OWLPropertyEndClass-domain" name="domain" visibility="public" type="EntityClass" association="_packagedElement.21">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="OWLPropertyEndClass-domain-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="OWLPropertyEndClass-domain-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="OWLPropertyEndClass-range" name="range" visibility="public" type="EntityClass" association="_packagedElement.22">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="OWLPropertyEndClass-range-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="OWLPropertyEndClass-range-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.21" memberEnd="OWLPropertyEndClass-domain _packagedElement.21-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.21-_ownedEnd.0" type="OWLPropertyEndClass" association="_packagedElement.21"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.22" memberEnd="OWLPropertyEndClass-range _packagedElement.22-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.22-_ownedEnd.0" type="OWLPropertyEndClass" association="_packagedElement.22"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="DependencyRelationshipClass" name="DependencyRelationshipClass">
+    <eAnnotations xmi:id="DependencyRelationshipClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="DependencyRelationshipClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="DependencyRelationshipClass-_ownedComment.0" annotatedElement="DependencyRelationshipClass">
+      <body> Dependency relationship. UML dependency (use, derived from, depends on) or OWL disjoint, equivalence and operand  </body>
+    </ownedComment>
+    <generalization xmi:id="DependencyRelationshipClass-_generalization.0" general="CharacteristicClass"/>
+    <ownedAttribute xmi:id="DependencyRelationshipClass-targetClass" name="targetClass" visibility="public" type="EntityClass" association="_packagedElement.24">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="DependencyRelationshipClass-targetClass-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="DependencyRelationshipClass-targetClass-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.24" memberEnd="DependencyRelationshipClass-targetClass _packagedElement.24-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.24-_ownedEnd.0" type="DependencyRelationshipClass" association="_packagedElement.24"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="BinaryRelationshipClass" name="BinaryRelationshipClass" isAbstract="true">
+    <eAnnotations xmi:id="BinaryRelationshipClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="BinaryRelationshipClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="BinaryRelationshipClass-_generalization.0" general="DependencyRelationshipClass"/>
+    <ownedAttribute xmi:id="BinaryRelationshipClass-lowerBound" name="lowerBound" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="BinaryRelationshipClass-lowerBound-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="BinaryRelationshipClass-lowerBound-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="BinaryRelationshipClass-upperBound" name="upperBound" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="BinaryRelationshipClass-upperBound-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="BinaryRelationshipClass-upperBound-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="AttributeClass" name="AttributeClass">
+    <eAnnotations xmi:id="AttributeClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="AttributeClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="AttributeClass-_ownedComment.0" annotatedElement="AttributeClass">
+      <body> Attribute is a binary relationship. targetClass is the type </body>
+    </ownedComment>
+    <generalization xmi:id="AttributeClass-_generalization.0" general="BinaryRelationshipClass"/>
+    <ownedAttribute xmi:id="AttributeClass-unit" name="unit" visibility="public" type="OntologyTerm">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AttributeClass-unit-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AttributeClass-unit-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AttributeClass-defaultValue" name="defaultValue" visibility="public" type="primitives-string">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AttributeClass-defaultValue-_lowerValue"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AttributeClass-defaultValue-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="AssociationEndClass" name="AssociationEndClass">
+    <eAnnotations xmi:id="AssociationEndClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="AssociationEndClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <generalization xmi:id="AssociationEndClass-_generalization.0" general="BinaryRelationshipClass"/>
+    <ownedAttribute xmi:id="AssociationEndClass-aggregation" name="aggregation" visibility="public" type="primitives-Aggregation">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AssociationEndClass-aggregation-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AssociationEndClass-aggregation-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AssociationEndClass-navigable" name="navigable" visibility="public" type="primitives-boolean">
+      <lowerValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AssociationEndClass-navigable-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AssociationEndClass-navigable-_upperValue" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="AssociationEndClass-associationEntityClass" name="associationEntityClass" visibility="public" type="EntityClass" association="_packagedElement.28">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="AssociationEndClass-associationEntityClass-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="AssociationEndClass-associationEntityClass-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.28" memberEnd="AssociationEndClass-associationEntityClass _packagedElement.28-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.28-_ownedEnd.0" type="AssociationEndClass" association="_packagedElement.28"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="NaryAssociationEndClass" name="NaryAssociationEndClass">
+    <eAnnotations xmi:id="NaryAssociationEndClass-_com.abstratt2Fmdd2Funit" source="com.abstratt/mdd/unit">
+      <details xmi:id="NaryAssociationEndClass-_com.abstratt2Fmdd2Funit-_details.0" key="name" value="model_reg.tuml"/>
+    </eAnnotations>
+    <ownedComment xmi:id="NaryAssociationEndClass-_ownedComment.0" annotatedElement="NaryAssociationEndClass">
+      <body> End of Nary association. targetClass == associationEntityClass </body>
+    </ownedComment>
+    <generalization xmi:id="NaryAssociationEndClass-_generalization.0" general="AssociationEndClass"/>
+    <ownedAttribute xmi:id="NaryAssociationEndClass-associationEntityClass" name="associationEntityClass" visibility="public" type="EntityClass" association="_packagedElement.30">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="NaryAssociationEndClass-associationEntityClass-_lowerValue" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="NaryAssociationEndClass-associationEntityClass-_upperValue" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_packagedElement.30" memberEnd="NaryAssociationEndClass-associationEntityClass _packagedElement.30-_ownedEnd.0">
+    <ownedEnd xmi:id="_packagedElement.30-_ownedEnd.0" type="NaryAssociationEndClass" association="_packagedElement.30"/>
+  </packagedElement>
+</uml:Model>
