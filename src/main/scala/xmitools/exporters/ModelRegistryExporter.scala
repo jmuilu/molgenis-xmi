@@ -41,7 +41,8 @@ object ModelRegistryExporter extends LazyLogging {
   /*
    * Note:
    * Do not export super classes, which do not exist in model e.g. http://www.omg.org/spec/UML/20110701/UML.xmi#int for primitive types
-   * Role names are generated if they do not exist
+   * 
+   * Role names are generatef dor assications if they do not exist
    */
   def exportPackages(contextId: String, submissionID: String, submissionIDSource: String,
     authorityFile: String, packageFile: String, entityFile: String, attributeFile: String, model: UMLModel, prefix: String = "") = {
@@ -51,11 +52,7 @@ object ModelRegistryExporter extends LazyLogging {
     val elemOut = openFile(entityFile)
     val attribOut = openFile(attributeFile)
 
-    //print(authOut, "identifier","source_identifier", "name")
-    //print(authOut, authorityId, authorityId, submissionIDSource)
-    //authOut.close()
 
-    //todo: remove possible duplicates in sublcasses. This may happen if the relationship is defined more than once...
     print(pkgOut, "identifier", "sourceidentifier", "sourcecontext_identifier", "name", "qName","type_identifier", "parentpackage_identifier", "description")
     print(pkgOut, prefix + submissionID, prefix + submissionIDSource, contextId,"name of model here", "qualifiednamexyz","model", "","testing...")
     
@@ -135,7 +132,7 @@ object ModelRegistryExporter extends LazyLogging {
         }
 
         /*
-         * Handle non navigable association ends. I.e. ends which are owned nyt the association 
+         * Handle non navigable association ends.  
          */
         p.associations.foreach {
           a =>
