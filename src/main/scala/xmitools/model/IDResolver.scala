@@ -133,8 +133,7 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler) extends LazyLogging {
     return comm
   }
 
-  /* Resolves other end of an association. Association ends are attributes (uml:Property) which are either 
-   * by an Entity (if they are navigable) or Association (non navigable associations)*/
+  /* Resolves other end of an association*/
   def resolveOtherEndOfBinaryAssociation(associationId: String, memberId: String): Option[XProperty] = {
     val _x = resolve(associationId)
     if (_x.isDefined) {
