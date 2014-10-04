@@ -9,8 +9,14 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
  */
 class XMIVersionHandler(val XMI: Ns, val UML: Ns, val version : String = "") extends LazyLogging {
 
+  val DUMMYID = "DUMMY_ID"
+  var rootId:String = null;
   import Ns._
 
+  def setRootId( id: String ) = {
+    rootId = id
+  }
+  
   def getRootPackageNode(elem: Elem): Node = {
     return (elem \ "Model").head;
   }
@@ -19,8 +25,12 @@ class XMIVersionHandler(val XMI: Ns, val UML: Ns, val version : String = "") ext
     val n = currentNode.n;
     if (!n.attribute(XMI, "id").isDefined) {
       assert(n.label == "Model", "ID is undefined") 
-      logger.warn("Model do not have id. Assign id manually.")
-      "DUMMY0001"
+      if ( rootId!= null ) {
+         rootId 
+      } else {
+        logger.warn("Model do not have id. Dummy id assigned: " + DUMMYID)
+        DUMMYID
+      }
     } else {
       n.attribute(XMI, "id").get.text
     }

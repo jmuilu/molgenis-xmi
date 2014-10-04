@@ -16,14 +16,14 @@ import xmitools.model.XClassifier
 import xmitools.model.XEnumeration
 import org.w3c.dom.TypeInfo
 
-class ModelRegistryExporter {
+/*
+ * TODO: refactor
+ */
+class ModelRegistryExporterEMX {
 
 }
-/*
- * TODO: Took old code here and refactor
- * 
- */
-object ModelRegistryExporter extends DataCleaner {
+
+object ModelRegistryExporterEMX extends DataCleaner {
 
   val SEP = "\t"
 

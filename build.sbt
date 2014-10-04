@@ -2,7 +2,7 @@ name := """molgenis-xmi"""
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.2"
 
 resolvers ++= Seq(
         "Typesafe Repository" at "http://repo.typesafe.com/repo/typesafe",
@@ -20,3 +20,7 @@ libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.7"
 libraryDependencies += "com.typesafe.scala-logging" % "scala-logging-slf4j_2.11" % "2.1.2"
 
 libraryDependencies += "com.typesafe" % "config" % "1.2.1"
+
+libraryDependencies += "com.typesafe.slick" % "slick-codegen_2.11" % "2.1.0"
+
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.33"

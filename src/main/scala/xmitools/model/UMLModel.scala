@@ -201,12 +201,13 @@ abstract class XClassifier(n: Node, parent: Option[XNode])(implicit vs: XMIVersi
 
   lazy val isAbstract = vs.parseIsAbstract(this)
   
+  //bad name:
   def parentIds = {
     ( generalizations.asInstanceOf[List[DirectedRelationship]] ++ realizations.asInstanceOf[List[DirectedRelationship]] ) . map {
       p=>
       assert( this.id == p.childId,"XMI Parent / Child relationsship do  not match. See "+ this.id+" "+p.childId ) 
       p.parentId
-    }
+    }        
   }
 }
 
@@ -255,6 +256,11 @@ object XDataType {
 
 class XEnumeration(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
   override val entityType = "enumeration"
+  
+ lazy val literals = (n \ "ownedLiteral").map {
+    a => XProperty(a, Some(this))
+  }.toList
+
 }
 object XEnumeration {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XEnumeration(n, parent)(vs)
@@ -265,7 +271,7 @@ class XAssociation(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandle
 
   val memberEndIdRefs = vs.parseMemberEndIdRefs(this);
 
-  val ownedEnds = (n \ "ownedEnd").map { node => XProperty(node, Some(this)) }
+  val ownedEnds = (n \ "ownedEnd").map { node => XProperty(node, Some(this)) } // no attributes... todo: chk 
 
   override def children = super.children ++ ownedEnds
 
