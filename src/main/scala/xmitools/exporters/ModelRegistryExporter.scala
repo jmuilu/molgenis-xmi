@@ -272,9 +272,26 @@ object ModelRegistryExporter extends DataCleaner {
     exportPackages(contextId, submissionID, submissionIDSource, "PackageMetaData.tsv", "EntityMetaData.tsv", "AttributeMetaData.tsv", model, prefix)
   }
 
+  def testx  = {
+   
+    implicit val vsHandler = XMIVersionHandler.EA_XMI241;
+    val file = "src/test/resources/models/BRIDG_UML241.xmi"
+    System.out.println("Load file...");
+    val xmi = scala.xml.XML.loadFile(file)
+    System.out.flush();
+    System.out.println("Loading...");
+    val model = UMLModel(xmi)(vsHandler)
+    System.out.println("Done...Resolving");
+    System.out.flush();
+    val res = model.createResolver
+    val x = res.resolve("x")
+    System.out.println("Done...");
+    System.out.println(model.allPackages.map(p=>p.name.get).mkString(",")) ;
+  }
+
   def main(args: Array[String]) {
 
-    test1
+    testx
 
     //val file = "src/test/resources/models/LSDAM2_2_3_UML241.xmi"
     //val file = "src/test/resources/models/textuml_model.uml"

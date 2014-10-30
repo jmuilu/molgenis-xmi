@@ -10,23 +10,29 @@ import xmitools.model.XClassifier
 import xmitools.model.XNode
 import xmitools.model.XAssociation
 import xmitools.model.XProperty
+import xmitools.model.XInstance
 
-abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: String) extends DataCleaner {
+abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: String,
+  val contextId: String , val contextName: String, val contextDesc: String) extends DataCleaner {
 
-  val resolver = model.createResolver
+  lazy val resolver = model.createResolver
 
   val entityMap = new HashMap[String, String]()
 
+  def insertContext( name: String,  contextId : String, description:String)
+  
   def insert(pkg: XPackage, rootIdentifier: String)
 
   def insert(e: XClassifier)
+
+  def insert(e: XInstance)
 
   def insertPropertyOwnByNonAssociationEntity(p: XProperty)
 
   def insertPropertyOwnByAssociationEntity(p: XProperty)
 
   def pfix(id: String): String = {
-    if (id != null && !id.isEmpty()) return prefix + id;
+    if (id != null && !id.isEmpty()) return prefix +":" + id;
     else return ""
   }
 
@@ -43,17 +49,27 @@ abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: 
   }
 
   def loadEntity(e: XClassifier): Unit = {
-    insert(e)
-    if ( e.isInstanceOf[XAssociation]) {
-        val a = e.asInstanceOf[XAssociation]
-        a.ownedEnds.foreach ( oe => insertPropertyOwnByAssociationEntity(oe))
+    if (e.isInstanceOf[XAssociation]) {
+      val a = e.asInstanceOf[XAssociation]
+      if (a.memberEndIdRefs.size == 2) {
+        a.ownedEnds.foreach(oe => insertPropertyOwnByAssociationEntity(oe))
+        insert(e)
+      } else {
+        logger.warn("Can only handle binary relationships. Association: " + a.id + ".  Number of members: " + a.memberEndIdRefs.size)
+      }
     } else {
-        e.attributes.foreach ( p=> insertPropertyOwnByNonAssociationEntity(p))
+      e.attributes.foreach(p => insertPropertyOwnByNonAssociationEntity(p))
+      if ( e.isInstanceOf[XInstance]) {
+        insert(e.asInstanceOf[XInstance])
+      } else 
+        insert(e)
     }
   }
 
-  def loadAll() = {
-    load(model, rootId);
+
+  def loadAll() = {   
+    insertContext(contextName, contextId, contextDesc)
+    load(model, contextId);
     loadEntities(model)
   }
 
@@ -64,13 +80,6 @@ abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: 
 
   }
 
-  def load(file: String, prefix: String, submissionId: String, submissionIdSource: String, contextId: String) {
-
-    implicit val vsHandler = XMIVersionHandler.EA_XMI241;
-    val xmi = scala.xml.XML.loadFile(file)
-    val model = UMLModel(xmi)(vsHandler)
-
-  }
 
   def comments(e: XNode): Option[String] = {
     val comm = resolver.commentsAsText(e.id)

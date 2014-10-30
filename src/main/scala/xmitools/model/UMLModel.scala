@@ -130,8 +130,9 @@ case class XNodeImpl(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHand
 
 class XPackage(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XNodeImpl(n, parent)(vs) {
   import Ns._
-
-  assert(nodeType.isDefined && nodeType.get == "uml:Package" || nodeType.get == "uml:Model", "Node should be a package or model. Found " + nodeType + " id = " + this.id)
+  
+  assert( (nodeType.isDefined && nodeType.get == "uml:Package") || (nodeType.isDefined && nodeType.get == "uml:Model"), 
+      "Node should be a package or model. Found " + nodeType + " id = " + this.id)
   lazy val packagedElements = (n \ "packagedElement").map {
     e =>
       if (eqs(e.attribute(vs.XMI, "type"), vs.UML, "Class")) {
@@ -156,6 +157,8 @@ class XPackage(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) e
         Some(XPrimitiveType(e, Option(this)))
       } else if (eqs(e.attribute(vs.XMI, "type"), vs.UML, "DataType")) {
         Some(XDataType(e, Option(this)))
+      } else if (eqs(e.attribute(vs.XMI, "type"), vs.UML, "InstanceSpecification")) {
+        Some(XInstance(e, Option(this)))
       } else {
         None
       }
@@ -342,6 +345,20 @@ object XComment {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XComment(n, parent)(vs)
 }
 
+// this is not fully correct. XInstance is instance of XClassifiers. The may have similar characteristics like
+// like ownedAttributes
+class XInstance(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
+  import Ns._
+  val classifier:String = getTextOrDie(n, "@classifier");
+  override val entityType = "instance"
+ 
+
+}
+
+object XInstance {
+  def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XInstance(n, parent)(vs)
+}
+
 /* A StructuralFeature */
 class XProperty(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XNodeImpl(n, parent)(vs) {
 
@@ -377,7 +394,19 @@ class XProperty(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) 
   val association: Option[String] = {
     //attribute can be also association. This happens when association end is given as navigable
     val a = (n \ "@association");
-    if (a.isEmpty) None;
+    if (a.isEmpty) {
+      if ( parent.isDefined ) {
+        val p = parent.get
+        if ( p.isInstanceOf[XAssociation] ) {
+          logger.warn("Association attribute was missing in property "+p.id+" using id of partent element instead")
+          Some(p.id)
+        } else {
+          None
+        }
+      } else {
+    	  None;
+      }
+    }
     else Some(a.text)
   }
 
@@ -401,7 +430,7 @@ class UMLModel private (modelNode: Node, rootNode: Node)(implicit vs: XMIVersion
     vs.parsePackagesFromExtensions(rootNode, this)
   }
 
-  val createResolver = new IDResolver(this, vs)
+  lazy val createResolver = new IDResolver(this, vs)
 
 }
 

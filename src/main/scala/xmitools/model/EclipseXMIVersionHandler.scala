@@ -13,6 +13,7 @@ class EclipseXMIVersionHandler(XMI: Ns, UML: Ns, version: String = "") extends X
 
   override def parseId(currentNode: XNode): String = {
     val n = currentNode.n;
+    assert(n.attribute(XMI, "id").isDefined, "XMI element do not have id. "+ n.toString().substring(0,10))
     val id = n.attribute(XMI, "id").get
     assert(!id.isEmpty, "XMI element do not have id")
     return id.text

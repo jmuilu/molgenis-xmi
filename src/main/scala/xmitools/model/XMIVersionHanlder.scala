@@ -41,7 +41,14 @@ class XMIVersionHandler(val XMI: Ns, val UML: Ns, val version : String = "") ext
     return currentNode.parent.get
   }
 
-  def parseNodeType(currentNode: XNode): Option[String] = toOptStr(currentNode.n.attribute(XMI, "type"))
+  def parseNodeType(currentNode: XNode): Option[String] = {
+   if ( !currentNode.n.attribute(XMI, "type").isDefined) {
+      assert ( currentNode.n.label == "Model")
+      return Some("uml:Model" ) 
+   } else {
+	   toOptStr(currentNode.n.attribute(XMI, "type")) 
+   }
+  }
 
   def parseAttributeType(currentNode: XNode): Option[String] = {
     val n = currentNode.n
@@ -131,9 +138,10 @@ class XMIVersionHandler(val XMI: Ns, val UML: Ns, val version : String = "") ext
 }
 
 object XMIVersionHandler {
-
   val EA_XMI241 = new XMIVersionHandler(Ns("xmi", "http://www.omg.org/spec/XMI/20110701"), Ns("uml", "http://www.omg.org/spec/UML/20110701"))
+  val MD_XMI21 = new XMIVersionHandler(Ns("xmi", "http://schema.omg.org/spec/XMI/2.1"), Ns("uml", "http://schema.omg.org/spec/UML/2.0"),"2.1")
   val ECLIPSE_20110701 = new EclipseXMIVersionHandler(Ns("xmi", "http://www.omg.org/spec/XMI/20110701"), Ns("uml", "http://www.eclipse.org/uml2/4.0.0/UML"))
   val ECLIPSE_2_0 = new EclipseXMIVersionHandler(Ns("xmi", "http://www.omg.org/XMI"), Ns("uml", "http://www.eclipse.org/uml2/4.0.0/UML"),"2.0")
+  
   def apply() = new XMIVersionHandler(Ns("xmi", "http://www.omg.org/spec/XMI/20110701"), Ns("uml", "http://www.omg.org/spec/UML/20110701"))
 }

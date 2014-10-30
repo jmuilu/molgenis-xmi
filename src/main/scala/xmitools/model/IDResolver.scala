@@ -70,14 +70,14 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler) extends LazyLogging {
 
   private def createIdMap(n: XPackage): Map[String, XNode] = {
     val xList = (n.id, n.asInstanceOf[XNode]) :: n.allChildren.map{c=>(c.id,c) }
-    //check:
-    for (i <- 0 until xList.size - 1) {
-      for (j <- i + 1 until xList.size) {
-        if (xList(i)._1.equals(xList(j)._1)) {
-          logger.warn("Check entity:  " + xList(i)._1 + ". It has introduced in XMI more than once. toString: " + xList(i)._2 + " AND " + xList(j)._2)
-        }
-      }
-    }
+//    //check:
+//    for (i <- 0 until xList.size - 1) {
+//      for (j <- i + 1 until xList.size) {
+//        if (xList(i)._1.equals(xList(j)._1)) {
+//          logger.warn("Check entity:  " + xList(i)._1 + ". It has introduced in XMI more than once. toString: " + xList(i)._2 + " AND " + xList(j)._2)
+//        }
+//      }
+//    }
     return Map(xList: _*)
   }
 
