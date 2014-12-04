@@ -8,7 +8,7 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
  */
 
 
-class IDResolver(n: XPackage, vs: XMIVersionHandler) extends LazyLogging {
+class IDResolver(n: XPackage, vs: XMIVersionHandler, nameSpace: String ) extends LazyLogging {
 
   private def mapChildren(children: List[XNode]): List[(String, XNode)] = {
 
@@ -39,6 +39,15 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler) extends LazyLogging {
     }
 
   }
+  
+  def pfix(id: String): String = {
+    if (id != null && !id.isEmpty()) return nameSpace +":" + id;
+    else return ""
+  }
+  def toSourceIdentifier( id: String) : String = {
+    return id.replaceFirst(nameSpace+":", "")
+  }
+
 
   lazy val otherDocumentationMap = digOutOtherDocumentations(n)
 
@@ -123,6 +132,19 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler) extends LazyLogging {
     return idMap.get(id)
   }
 
+  def resolveClassifierType ( id: String ) : Option[String] = {
+    val x = resolve(id)
+    if ( x.isDefined) {
+    	if ( x.get.isInstanceOf[XClassifier]) {
+    		return Some ((x.get.asInstanceOf[XClassifier]).entityType)
+    	} else {
+    		return None
+    	}      
+    } else {
+      None
+    }
+  } 
+  
   def resolveComments(id: String): List[XComment] = {
 
     val comm = if (!commentMap.isDefinedAt(id)) {

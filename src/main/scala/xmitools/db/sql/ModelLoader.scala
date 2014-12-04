@@ -19,7 +19,7 @@ abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: 
 
   val entityMap = new HashMap[String, String]()
 
-  def insertContext( name: String,  contextId : String, description:String)
+  def insertContext( contextId : String, name: String, description:String)
   
   def insert(pkg: XPackage, rootIdentifier: String)
 
@@ -32,8 +32,7 @@ abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: 
   def insertPropertyOwnByAssociationEntity(p: XProperty)
 
   def pfix(id: String): String = {
-    if (id != null && !id.isEmpty()) return prefix +":" + id;
-    else return ""
+    resolver.pfix( id)
   }
 
   def load(pkg: XPackage, rootIdentifier: String): Unit = {
@@ -68,7 +67,7 @@ abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: 
 
 
   def loadAll() = {   
-    insertContext(contextName, contextId, contextDesc)
+    insertContext(contextId, contextName, contextDesc)
     load(model, contextId);
     loadEntities(model)
   }

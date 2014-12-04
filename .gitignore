@@ -1,5 +1,7 @@
+.settings
 *.class
 *.log
+*.xlsx
 *private*
 genotype.txt
 # sbt specific
@@ -15,6 +17,7 @@ project/plugins/project/
 TestSheet.scala
 
 *.conf
+*.tsv
 
 # Scala-IDE specific
 .scala_dependencies

@@ -17,7 +17,7 @@ class ModelTest extends FunSuite {
     val file: String
     val vsHandler: XMIVersionHandler
     val xmi = scala.xml.XML.loadFile(file)
-    def model = UMLModel(xmi)(vsHandler)
+    def model = UMLModel(xmi,"TMP_NAMESPACE")(vsHandler)
     val r = model.createResolver
 
   }

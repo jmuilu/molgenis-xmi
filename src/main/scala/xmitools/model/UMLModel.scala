@@ -32,7 +32,6 @@ trait DirectedRelationship {
   def childId = sourceId
 }
 
-
 /*
  * Namespace utility class
  */
@@ -55,13 +54,20 @@ object Ns {
   def eqs(x: Option[Seq[Node]], ns: Ns, str: String) = x.isDefined && (x.get.text == (ns.abbreviation + ":" + str))
 
   def toOptStr(x: Option[Seq[Node]]): Option[String] = { if (x.isDefined && !x.get.isEmpty) { return Some(x.get.text) } else None }
-  
+
   def getTextOrDie(n: Node, name: String): String = {
     val x = (n \ name)
     assert(!x.isEmpty, "Assertion failed. Property " + name + " do not exist in node ")
     return x.text
   }
-  
+  def getOptStr(n: Node, name: String): Option[String] = {
+    val x = (n \ name)
+    if ( x.isEmpty) {
+      return None      
+    }
+    return Some(x.text)
+  }
+
   def exist(x: Option[Seq[Node]]) = x.isDefined && !x.get.text.isEmpty()
 
   def s(ns: Ns, str: String) = "@{" + ns.toString + "}" + str
@@ -90,10 +96,10 @@ case class XNodeImpl(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHand
 
   import Ns._
 
-  lazy val id = vs.parseId( this)
+  lazy val id = vs.parseId(this)
 
   lazy val name = toOptStr(n.attribute("name"))
-  
+
   lazy val nodeType = vs.parseNodeType(this);
 
   lazy val comments = (n \ "ownedComment").map {
@@ -110,19 +116,19 @@ case class XNodeImpl(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHand
     val rest = children.flatMap { c => c.allChildren }
     return children ++ rest
   }
-  
+
   def qualifiedName = {
-    if ( ! name.isDefined) {
+    if (!name.isDefined) {
       None
     } else {
-      if ( parent.isDefined) {
-        if ( parent.get.qualifiedName.isDefined) {
-          Some( parent.get.qualifiedName.get +"." + name.get)
+      if (parent.isDefined) {
+        if (parent.get.qualifiedName.isDefined) {
+          Some(parent.get.qualifiedName.get + "." + name.get)
         } else {
           None
         }
       } else {
-        Some( name.get )
+        Some(name.get)
       }
     }
   }
@@ -130,9 +136,9 @@ case class XNodeImpl(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHand
 
 class XPackage(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XNodeImpl(n, parent)(vs) {
   import Ns._
-  
-  assert( (nodeType.isDefined && nodeType.get == "uml:Package") || (nodeType.isDefined && nodeType.get == "uml:Model"), 
-      "Node should be a package or model. Found " + nodeType + " id = " + this.id)
+
+  assert((nodeType.isDefined && nodeType.get == "uml:Package") || (nodeType.isDefined && nodeType.get == "uml:Model"),
+    "Node should be a package or model. Found " + nodeType + " id = " + this.id)
   lazy val packagedElements = (n \ "packagedElement").map {
     e =>
       if (eqs(e.attribute(vs.XMI, "type"), vs.UML, "Class")) {
@@ -168,7 +174,7 @@ class XPackage(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) e
   lazy val entities = packagedElements.filter(f => f.isInstanceOf[XClassifier]).map { f => f.asInstanceOf[XClassifier] }.toList
   lazy val dataTypes = packagedElements.filter(f => f.isInstanceOf[XDataType]).map { f => f.asInstanceOf[XDataType] }.toList
   lazy val allSubPackages = subPackages.flatMap(p => toPackageList(p)).toList
-  lazy val allPackages =  this :: allSubPackages 
+  lazy val allPackages = this :: allSubPackages
   lazy val associations = packagedElements.filter(f => f.isInstanceOf[XAssociation]).map { f => f.asInstanceOf[XAssociation] }.toList
   //lazy val realizations = packagedElements.filter(f => f.isInstanceOf[XRealization]).map { f => f.asInstanceOf[XRealization] }.toList
   lazy val dependencies = packagedElements.filter(f => f.isInstanceOf[XDependency]).map { f => f.asInstanceOf[XDependency] }.toList
@@ -186,13 +192,27 @@ object XPackage {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XPackage(n, parent)(vs)
 }
 
+object entityTypes {
+
+  val ASSOCIATION = "association"
+  val ASSOCIATIONCLASS = "associationClass"
+  val INSTANCE = "instance"
+  val CLASS = "class"
+  val INTERFACE = "interface"
+  val ARTIFACT = "artifact"
+  val PRIMITIVE = "primitive"
+  val ENUMERATION = "enumeration"
+
+}
 abstract class XClassifier(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XNodeImpl(n, parent)(vs) {
+
+  import entityTypes._
 
   lazy val attributes = (n \ "ownedAttribute").map {
     a => XProperty(a, Some(this))
   }.toList
 
-  lazy  val generalizations = (n \ "generalization").map {
+  lazy val generalizations = (n \ "generalization").map {
     a => XGeneralization(a, Some(this))
   }.toList
 
@@ -203,19 +223,36 @@ abstract class XClassifier(n: Node, parent: Option[XNode])(implicit vs: XMIVersi
   val entityType: String // convenience attribute (compatible with model-reg)
 
   lazy val isAbstract = vs.parseIsAbstract(this)
-  
+
   //bad name:
   def parentIds = {
-    ( generalizations.asInstanceOf[List[DirectedRelationship]] ++ realizations.asInstanceOf[List[DirectedRelationship]] ) . map {
-      p=>
-      assert( this.id == p.childId,"XMI Parent / Child relationsship do  not match. See "+ this.id+" "+p.childId ) 
-      p.parentId
-    }        
+    (generalizations.asInstanceOf[List[DirectedRelationship]] ++ realizations.asInstanceOf[List[DirectedRelationship]]).map {
+      p =>
+        assert(this.id == p.childId, "XMI Parent / Child relationsship do  not match. See " + this.id + " " + p.childId)
+        p.parentId
+    }
   }
+
+  def generalizationIds = {
+    (generalizations.asInstanceOf[List[DirectedRelationship]]).map {
+      p =>
+        assert(this.id == p.childId, "XMI Parent / Child relationsship do  not match. See " + this.id + " " + p.childId)
+        p.parentId
+    }
+  }
+
+  def realizationIds = {
+    (realizations.asInstanceOf[List[DirectedRelationship]]).map {
+      p =>
+        assert(this.id == p.childId, "XMI Parent / Child relationsship do  not match. See " + this.id + " " + p.childId)
+        p.parentId
+    }
+  }
+
 }
 
 class XClass(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  val entityType = "class"
+  val entityType = entityTypes.CLASS
 }
 
 object XClass {
@@ -223,7 +260,7 @@ object XClass {
 }
 
 class XInterface(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  override val entityType = "interface"
+  override val entityType = entityTypes.INTERFACE
 }
 
 object XInterface {
@@ -231,8 +268,9 @@ object XInterface {
 }
 
 class XArtifact(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  override val entityType = "artifact"
+  override val entityType = entityTypes.ARTIFACT
 }
+
 object XArtifact {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XArtifact(n, parent)(vs)
 }
@@ -241,7 +279,7 @@ object XArtifact {
  * Primitive types are taken e.g. from XMI extensions package. Has type uml:PrimitiveType
  */
 class XPrimitiveType(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  override val entityType = "primitive"
+  override val entityType = entityTypes.PRIMITIVE
 }
 
 object XPrimitiveType {
@@ -251,20 +289,21 @@ object XPrimitiveType {
  * DataTypes corresponds to uml:DataType. 
  */
 class XDataType(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  override val entityType = "primitive"
+  override val entityType = entityTypes.PRIMITIVE
 }
 object XDataType {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XDataType(n, parent)(vs)
 }
 
 class XEnumeration(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
-  override val entityType = "enumeration"
-  
- lazy val literals = (n \ "ownedLiteral").map {
+  override val entityType = entityTypes.ENUMERATION
+
+  lazy val literals = (n \ "ownedLiteral").map {
     a => XProperty(a, Some(this))
   }.toList
 
 }
+
 object XEnumeration {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XEnumeration(n, parent)(vs)
 }
@@ -278,7 +317,7 @@ class XAssociation(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandle
 
   override def children = super.children ++ ownedEnds
 
-  override val entityType = "association"
+  override val entityType = entityTypes.ASSOCIATION
 }
 
 object XAssociation {
@@ -286,8 +325,9 @@ object XAssociation {
 }
 
 class XAssociationClass(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XAssociation(n, parent)(vs) {
-  override val entityType = "associationClass"
+  override val entityType = entityTypes.ASSOCIATIONCLASS
 }
+
 object XAssociationClass {
   def apply(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) = new XAssociationClass(n, parent)(vs)
 }
@@ -349,9 +389,8 @@ object XComment {
 // like ownedAttributes
 class XInstance(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) extends XClassifier(n, parent)(vs) {
   import Ns._
-  val classifier:String = getTextOrDie(n, "@classifier");
-  override val entityType = "instance"
- 
+  val classifier: Option[String] = getOptStr(n, "@classifier");
+  override val entityType = entityTypes.INSTANCE
 
 }
 
@@ -395,19 +434,18 @@ class XProperty(n: Node, parent: Option[XNode])(implicit vs: XMIVersionHandler) 
     //attribute can be also association. This happens when association end is given as navigable
     val a = (n \ "@association");
     if (a.isEmpty) {
-      if ( parent.isDefined ) {
+      if (parent.isDefined) {
         val p = parent.get
-        if ( p.isInstanceOf[XAssociation] ) {
-          logger.warn("Association attribute was missing in property "+p.id+" using id of partent element instead")
+        if (p.isInstanceOf[XAssociation]) {
+          logger.warn("Association attribute was missing in property " + p.id + " using id of partent element instead")
           Some(p.id)
         } else {
           None
         }
       } else {
-    	  None;
+        None;
       }
-    }
-    else Some(a.text)
+    } else Some(a.text)
   }
 
   override def toString(): String = super.toString + " " + typeIdRef
@@ -422,7 +460,7 @@ object XProperty {
  * XMILoader
  * 
  */
-class UMLModel private (modelNode: Node, rootNode: Node)(implicit vs: XMIVersionHandler) extends XPackage(modelNode, None)(vs) {
+class UMLModel private (modelNode: Node, rootNode: Node, nameSpace: String)(implicit vs: XMIVersionHandler) extends XPackage(modelNode, None)(vs) {
 
   import Ns._
 
@@ -430,25 +468,24 @@ class UMLModel private (modelNode: Node, rootNode: Node)(implicit vs: XMIVersion
     vs.parsePackagesFromExtensions(rootNode, this)
   }
 
-  lazy val createResolver = new IDResolver(this, vs)
+  lazy val createResolver = new IDResolver(this, vs, nameSpace)
 
 }
 
 object UMLModel {
 
-  def apply(x: Elem)(implicit vs: XMIVersionHandler) = {
+  def apply(x: Elem, nameSpace: String)(implicit vs: XMIVersionHandler) = {
     assert(vs != null)
     assert(x != null)
     assert(x.scope != null)
     assert(x.scope.getURI("uml") == vs.UML.uri, " XMI Not supported. URI = " + x.scope.getURI("uml") + ". Should have been=" + vs.UML.uri)
     assert(x.scope.getURI("xmi") == vs.XMI.uri, " XMI Not supported. XMI = " + x.scope.getURI("xmi"))
-    if ( vs.version != "") {
+    if (vs.version != "") {
       val v = x.attribute(vs.XMI, "version")
-      assert( v.isDefined,"XMI not supported. Wrong version" )
-      assert( v.get.text == vs.version,"XMI not supported. Wrong version "+v.get.text )
+      assert(v.isDefined, "XMI not supported. Wrong version")
+      assert(v.get.text == vs.version, "XMI not supported. Wrong version " + v.get.text)
     }
-    new UMLModel(vs.getRootPackageNode(x), x)(vs)
+    new UMLModel(vs.getRootPackageNode(x), x, nameSpace)(vs)
   }
-
 
 }

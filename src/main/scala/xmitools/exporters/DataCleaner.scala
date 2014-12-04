@@ -10,8 +10,9 @@ import xmitools.model.XNode
 trait DataCleaner extends LazyLogging {
 
   val UNKNOWN = "undefined"
+  val UNBOUND = "-1"
   def P(x: String): String = x.replaceAll("\\s+", " ")
-  def M(x: String): String = if (x == "*") "-1" else x //unlimited multiplicity
+  def M(x: String): String = if (x == "*") UNBOUND else x //unlimited multiplicity
 
   def isMoreThanOne(multiplicity: Option[String]): Boolean = {
     if (multiplicity.isDefined) {

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_zA_nQGfqEeS3yOrtnopAkA" name="model">
+  <eAnnotations xmi:id="_zA_nQWfqEeS3yOrtnopAkA" source="genmymodel">
+    <details xmi:id="_zA_nQmfqEeS3yOrtnopAkA" key="uuid" value="_ncNAUGfoEeS3yOrtnopAkA"/>
+  </eAnnotations>
+  <packageImport xmi:id="_zA_nQ2fqEeS3yOrtnopAkA">
+    <eAnnotations xmi:id="_zA_nRGfqEeS3yOrtnopAkA" source="genmymodel">
+      <details xmi:id="_zA_nRWfqEeS3yOrtnopAkA" key="uuid" value="_ncNnYGfoEeS3yOrtnopAkA"/>
+    </eAnnotations>
+    <importedPackage href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  <packageImport xmi:id="_zA_nRmfqEeS3yOrtnopAkA">
+    <eAnnotations xmi:id="_zA_nR2fqEeS3yOrtnopAkA" source="genmymodel">
+      <details xmi:id="_zA_nSGfqEeS3yOrtnopAkA" key="uuid" value="_ncNnYWfoEeS3yOrtnopAkA"/>
+    </eAnnotations>
+    <importedPackage href="pathmap://GENMYMODEL_LIBRARIES/GenMyModelPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  <packagedElement xsi:type="uml:Package" xmi:id="_zA_nSWfqEeS3yOrtnopAkA" name="Biobank">
+    <eAnnotations xmi:id="_zA_nSmfqEeS3yOrtnopAkA" source="genmymodel">
+      <details xmi:id="_zA_nS2fqEeS3yOrtnopAkA" key="uuid" value="_nyK9EEoXEDK9iYuWWdY6uw"/>
+    </eAnnotations>
+    <ownedComment xmi:id="_zA_nTGfqEeS3yOrtnopAkA" annotatedElement="_zA_nT2fqEeS3yOrtnopAkA" body="Comment...for the biobank">
+      <eAnnotations xmi:id="_zA_nTWfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_nTmfqEeS3yOrtnopAkA" key="uuid" value="_k7oYUEoYEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+    </ownedComment>
+    <packagedElement xsi:type="uml:Class" xmi:id="_zA_nT2fqEeS3yOrtnopAkA" clientDependency="_zA_nUmfqEeS3yOrtnopAkA" name="Biobank">
+      <eAnnotations xmi:id="_zA_nUGfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_nUWfqEeS3yOrtnopAkA" key="uuid" value="_VGb2sEoXEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <interfaceRealization xmi:id="_zA_nUmfqEeS3yOrtnopAkA" client="_zA_nT2fqEeS3yOrtnopAkA" supplier="_zA_ngWfqEeS3yOrtnopAkA" contract="_zA_ngWfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_nU2fqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nVGfqEeS3yOrtnopAkA" key="uuid" value="_bEXYQEoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+      </interfaceRealization>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Class" xmi:id="_zA_nVWfqEeS3yOrtnopAkA" name="Address">
+      <eAnnotations xmi:id="_zA_nVmfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_nV2fqEeS3yOrtnopAkA" key="uuid" value="_4H6ccEoXEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_zA_nWGfqEeS3yOrtnopAkA" name="street">
+        <eAnnotations xmi:id="_zA_nWWfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nWmfqEeS3yOrtnopAkA" key="uuid" value="_5GztoEoXEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_zA_nW2fqEeS3yOrtnopAkA" name="city">
+        <eAnnotations xmi:id="_zA_nXGfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nXWfqEeS3yOrtnopAkA" key="uuid" value="_6ZoAYEoXEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Association" xmi:id="_zA_nXmfqEeS3yOrtnopAkA" name="Biobank_Address" memberEnd="_zA_nZmfqEeS3yOrtnopAkA _zA_nYWfqEeS3yOrtnopAkA" navigableOwnedEnd="_zA_nYWfqEeS3yOrtnopAkA _zA_nZmfqEeS3yOrtnopAkA">
+      <eAnnotations xmi:id="_zA_nX2fqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_nYGfqEeS3yOrtnopAkA" key="uuid" value="_9IYsskoXEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <ownedEnd xmi:id="_zA_nYWfqEeS3yOrtnopAkA" name="address" type="_zA_nVWfqEeS3yOrtnopAkA" aggregation="shared" association="_zA_nXmfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_nYmfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nY2fqEeS3yOrtnopAkA" key="uuid" value="_9IYssEoXEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_zA_nZGfqEeS3yOrtnopAkA"/>
+        <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_zA_nZWfqEeS3yOrtnopAkA" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_zA_nZmfqEeS3yOrtnopAkA" name="biobank" type="_zA_nT2fqEeS3yOrtnopAkA" association="_zA_nXmfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_nZ2fqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_naGfqEeS3yOrtnopAkA" key="uuid" value="_9IYssUoXEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_zA_naWfqEeS3yOrtnopAkA"/>
+        <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_zA_namfqEeS3yOrtnopAkA" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Class" xmi:id="_zA_na2fqEeS3yOrtnopAkA" clientDependency="_zA_ncWfqEeS3yOrtnopAkA" name="Sample">
+      <eAnnotations xmi:id="_zA_nbGfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_nbWfqEeS3yOrtnopAkA" key="uuid" value="_Cr8b4EoYEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_zA_nbmfqEeS3yOrtnopAkA" name="quality" type="_zA_nh2fqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_nb2fqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_ncGfqEeS3yOrtnopAkA" key="uuid" value="_hWe2kEoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+      </ownedAttribute>
+      <interfaceRealization xmi:id="_zA_ncWfqEeS3yOrtnopAkA" client="_zA_na2fqEeS3yOrtnopAkA" supplier="_zA_ngWfqEeS3yOrtnopAkA" contract="_zA_ngWfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_ncmfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nc2fqEeS3yOrtnopAkA" key="uuid" value="_ZzJA8EoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+      </interfaceRealization>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Association" xmi:id="_zA_ndGfqEeS3yOrtnopAkA" name="Biobank_Sample" memberEnd="_zA_nd2fqEeS3yOrtnopAkA _zA_nfGfqEeS3yOrtnopAkA" navigableOwnedEnd="_zA_nd2fqEeS3yOrtnopAkA _zA_nfGfqEeS3yOrtnopAkA">
+      <eAnnotations xmi:id="_zA_ndWfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_ndmfqEeS3yOrtnopAkA" key="uuid" value="_E8QRoUoYEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <ownedEnd xmi:id="_zA_nd2fqEeS3yOrtnopAkA" name="sample" type="_zA_na2fqEeS3yOrtnopAkA" aggregation="shared" association="_zA_ndGfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_neGfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_neWfqEeS3yOrtnopAkA" key="uuid" value="_E8PqkEoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_zA_nemfqEeS3yOrtnopAkA"/>
+        <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_zA_ne2fqEeS3yOrtnopAkA" value="*"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_zA_nfGfqEeS3yOrtnopAkA" name="biobank" type="_zA_nT2fqEeS3yOrtnopAkA" association="_zA_ndGfqEeS3yOrtnopAkA">
+        <eAnnotations xmi:id="_zA_nfWfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nfmfqEeS3yOrtnopAkA" key="uuid" value="_E8QRoEoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_zA_nf2fqEeS3yOrtnopAkA"/>
+        <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_zA_ngGfqEeS3yOrtnopAkA" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Interface" xmi:id="_zA_ngWfqEeS3yOrtnopAkA" name="Identifiable">
+      <eAnnotations xmi:id="_zA_ngmfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_ng2fqEeS3yOrtnopAkA" key="uuid" value="_SxRgsEoYEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+      <ownedAttribute xmi:id="_zA_nhGfqEeS3yOrtnopAkA" name="identifier">
+        <eAnnotations xmi:id="_zA_nhWfqEeS3yOrtnopAkA" source="genmymodel">
+          <details xmi:id="_zA_nhmfqEeS3yOrtnopAkA" key="uuid" value="_XJGckEoYEDK9iYuWWdY6uw"/>
+        </eAnnotations>
+        <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xsi:type="uml:Class" xmi:id="_zA_nh2fqEeS3yOrtnopAkA" name="QualityMeasure" isAbstract="true">
+      <eAnnotations xmi:id="_zA_niGfqEeS3yOrtnopAkA" source="genmymodel">
+        <details xmi:id="_zA_niWfqEeS3yOrtnopAkA" key="uuid" value="_dkvqUEoYEDK9iYuWWdY6uw"/>
+      </eAnnotations>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

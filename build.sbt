@@ -24,3 +24,8 @@ libraryDependencies += "com.typesafe" % "config" % "1.2.1"
 libraryDependencies += "com.typesafe.slick" % "slick-codegen_2.11" % "2.1.0"
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.33"
+
+libraryDependencies += "org.apache.poi" % "poi" % "3.10.1"
+
+libraryDependencies += "org.apache.poi" % "poi-ooxml" % "3.10.1"
+

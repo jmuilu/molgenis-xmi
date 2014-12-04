@@ -18,7 +18,9 @@ import org.w3c.dom.TypeInfo
 
 /*
  * TODO: refactor
+
  */
+@Deprecated
 class ModelRegistryExporterEMX {
 
 }
@@ -239,7 +241,7 @@ object ModelRegistryExporterEMX extends DataCleaner {
     val contextId = "con0001"
 
     val xmi = scala.xml.XML.loadFile(file)
-    val model = UMLModel(xmi)(vsHandler)
+    val model = UMLModel(xmi, prefix)(vsHandler)
 
     val outSrc = openFile("SourceContext.tsv")
     //identifier , name, steward, submission

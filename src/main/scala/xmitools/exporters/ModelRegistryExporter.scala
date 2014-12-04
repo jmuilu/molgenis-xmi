@@ -16,6 +16,7 @@ import xmitools.model.XClassifier
 import xmitools.model.XEnumeration
 import org.w3c.dom.TypeInfo
 
+@Deprecated
 class ModelRegistryExporter {
 
 }
@@ -239,7 +240,7 @@ object ModelRegistryExporter extends DataCleaner {
     val contextId = "con0001"
 
     val xmi = scala.xml.XML.loadFile(file)
-    val model = UMLModel(xmi)(vsHandler)
+    val model = UMLModel(xmi,prefix)(vsHandler)
 
     val outSrc = openFile("SourceContext.tsv")
     //identifier , name, steward, submission
@@ -280,7 +281,7 @@ object ModelRegistryExporter extends DataCleaner {
     val xmi = scala.xml.XML.loadFile(file)
     System.out.flush();
     System.out.println("Loading...");
-    val model = UMLModel(xmi)(vsHandler)
+    val model = UMLModel(xmi,"XX")(vsHandler)
     System.out.println("Done...Resolving");
     System.out.flush();
     val res = model.createResolver
