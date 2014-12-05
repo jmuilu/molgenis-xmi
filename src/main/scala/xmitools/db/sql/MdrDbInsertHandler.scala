@@ -8,7 +8,7 @@ import xmitools.model.XProperty
 import xmitools.model.XInstance
 import scala.xml.Elem
 import xmitools.db.emx.EmxInsertHandler
-
+ 
 class MDRDbInsertHanlder extends InsertHandler {
 	  import scala.slick.driver.MySQLDriver.simple._
 	  val DB = new ModelDB

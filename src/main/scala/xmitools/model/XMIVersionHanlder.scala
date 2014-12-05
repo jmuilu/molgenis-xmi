@@ -143,6 +143,7 @@ object XMIVersionHandler {
   val MD_XMI21 = new XMIVersionHandler(Ns("xmi", "http://schema.omg.org/spec/XMI/2.1"), Ns("uml", "http://schema.omg.org/spec/UML/2.0"),"2.1")// not supported
   val ECLIPSE_20110701 = new EclipseXMIVersionHandler(Ns("xmi", "http://www.omg.org/spec/XMI/20110701"), Ns("uml", "http://www.eclipse.org/uml2/4.0.0/UML")) // ...
   val ECLIPSE_2_0 = new EclipseXMIVersionHandler(Ns("xmi", "http://www.omg.org/XMI"), Ns("uml", "http://www.eclipse.org/uml2/4.0.0/UML"),"2.0") // not supported
+  val ECLIPSE_2_1 = new EclipseXMIVersionHandler21(Ns("xmi", "http://schema.omg.org/spec/XMI/2.1"), Ns("uml", "http://schema.omg.org/spec/UML/2.2"),"2.1") // not supported
   
   def apply() = new XMIVersionHandler(Ns("xmi", "http://www.omg.org/spec/XMI/20110701"), Ns("uml", "http://www.omg.org/spec/UML/20110701"))
 }

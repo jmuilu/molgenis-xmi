@@ -16,6 +16,7 @@ import com.typesafe.config.ConfigParseOptions
 import scala.collection.mutable.HashMap
 import com.typesafe.config.Config
 import xmitools.model.XEnumeration
+import xmitools.model.XNode
 
 class Workbook(workbook: XSSFWorkbook) {
   def createSheet(name: String) = new Sheet(workbook.createSheet(name))
@@ -44,16 +45,18 @@ class Sheet(xsheet: XSSFSheet) {
 
 }
 
-class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends InsertHandler with LazyLogging {
+class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxTags, modelName: String) extends InsertHandler with LazyLogging {
   import Tag._
 
-  val tagfile = EmxTags("./src/test/resources/emx_tags.conf")
   val workbook = new Workbook(new XSSFWorkbook());
   val packages = workbook.createSheet("packages")
   val entities = workbook.createSheet("entities")
   val attributes = workbook.createSheet("attributes")
   val tags = workbook.createSheet("tags")
   val tagMap = new HashMap[String, Tag]();
+
+  val entityNameMap = new HashMap[String, Int]()
+  val entityIdMap = new HashMap[String, String]()
 
   packages.addRow("name", "description", "parent", "tags");
   entities.addRow("name", "package", "description", "abstract", "label", "extends", "tags")
@@ -68,10 +71,30 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
     }
 
   }
-  //insertTags()
+
+  def hackTheName(name: String): String = {
+    var _name = if (name.length() > 64) {
+      name.substring(0, 64);
+    } else {
+      name
+    }
+    //    if ( entityNameMap.isDefinedAt( _name)) {
+    //      val n = entityNameMap.get(_name).get
+    //      _name = _name + (n + 1)
+    //      entityNameMap.put(_name , n + 1)
+    //    }
+    //  need to pre-process the names    
+    return _name;
+  }
+
+  def toEMXName(name: String): String = {
+    val fixed = name.replaceAll("[^A-Za-z0-9_]", "").replaceAll("^[0-9]", "X");
+    return hackTheName(fixed)
+  }
 
   def toQNamesStr(ids: List[String]) = ids.map { x => toQname(x) }.mkString(",")
 
+  /** EMX uses names not identifiers/GUIDs. Need to hack the names in */
   def toQname(id: String): String = {
     if (id == "") return ""
 
@@ -80,28 +103,22 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
       logger.warn("ID " + id + " not resolved")
       return id
     }
-    val qn = e.get.qualifiedName
-    if ( qn.isDefined) {
-      return qn.get
+    //val qn = e.get.qualifiedName
+    val qn = e.get.name
+    toEMXName(if (qn.isDefined) {
+      modelName + "_" + qn.get
     } else {
-       "NONAME:"+id 
-    }
+      logger.warn("Entity do not have name. Id used instead" + id)
+      id
+    })
   }
 
-  //  def insertTags() = {    
-  //    val t = tagfile.tags
-  //    t.foreach {
-  //      t=>
-  //      val v = t._2  
-  //      tags.addRow(t._1,v.getString("object.label"),v.getString("relation.iri"),v.getString("codesystem"),v.getString("relation.label"))
-  //    }
-  //    
-  //  }
   def insertPackage(identifier: String, name: String, sourceIdentifier: String, description: Option[String],
     parentPackageIdentifier: Option[String], namespaceIdentifier: String) = {
     val parent = parentPackageIdentifier.getOrElse("")
     val desc = description.getOrElse("")
-    packages.addRow(toQname(identifier), desc, parent)
+    val tags = List(tagLiteral(SOURCEID, sourceIdentifier), tagLiteral(SOURCENAME, name))
+    packages.addRow(toQname(identifier), desc, toQname(parent), tags.mkString(","))
   }
 
   def extractLabel(label: String): String = {
@@ -119,6 +136,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
       case _ => chr
     }
   }
+
   def harmonize(chr: String): String = {
     chr match {
       case "-1" => "*"
@@ -130,7 +148,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
     val c = tagfile.relation(relation)
     val target = c.getString("range")
     val i = tagfile.emxid(relation, fixSpecial(harmonize(label)))
-    val t = Tag(c, target, harmonize(label), target)
+    val t = Tag(c, "", harmonize(label), target)
     tagMap.put(i, t)
     return i
   }
@@ -153,25 +171,35 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
     typeCv: String, typeQualifierCv: String, packageIdentifier: String, instanceOfIdentifier: Option[String],
     generalizations: List[String], realizations: List[String]) = {
 
-    val e = resolver.resolveClassifierType(sourceIdentifier)
-    assert(e.isDefined)
-    if (e.get == CLASS || e.get == INTERFACE) {
-      val tagIds = tagIdList(GENERALIZATON, generalizations) ++ tagIdList(REALIZATION, realizations)
-      val desc = description.getOrElse("")
-      val abs = if (typeQualifierCv == "abstract") "true" else "false";
-      val ext = if (generalizations.length > 0) {
-        if (generalizations.size > 1) {
-          logger.warn("Cannot handle multiple inheritance properly");
-        }
-        generalizations(0)
-      } else {
-        ""
-      }
-      entities.addRow(toQname(identifier), toQname(packageIdentifier), desc, abs, name, toQname(ext), tagIds.mkString(","))
-    } else {
-      logger.warn("Cannot handle: " + e.get)
-    }
+    if (!entityIdMap.isDefinedAt(identifier)) {
+      entityIdMap.put(identifier, "DONE");
+      val e = resolver.resolveClassifierType(sourceIdentifier)
+      assert(e.isDefined)
+      if (e.get == CLASS || e.get == INTERFACE) {
 
+        val tagIds = tagIdList(GENERALIZATON, generalizations) ++
+          tagIdList(REALIZATION, realizations) ++
+          List(tagLiteral(SOURCEID, sourceIdentifier), tagLiteral(SOURCENAME, name))
+
+        val desc = description.getOrElse("")
+        val abs = if (typeQualifierCv == "abstract") "true" else "false";
+        val ext = if (generalizations.length > 0) {
+          if (generalizations.size > 1) {
+            logger.warn("Cannot handle multiple inheritance properly");
+          }
+          generalizations(0)
+        } else {
+          ""
+        }
+        entities.addRow(toQname(identifier), toQname(packageIdentifier), desc, abs, name, toQname(ext), tagIds.mkString(","))
+      } else {
+        if (e.get == PRIMITIVE) {
+          logger.warn("Primitives handled differenlty" + e.get)
+        } else {
+          if (e.get != ASSOCIATION) logger.warn("Following entities are ignored...: " + e.get)
+        }
+      }
+    }
   }
 
   def resolvePrimitiveType(cls: XClassifier): String = {
@@ -179,6 +207,17 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
       return cls.name.getOrElse("UNKNOWN")
     } else {
       return cls.name.getOrElse("UNKNOWN")
+    }
+  }
+
+  def resolveEXMDataType(cls: XNode): Option[String] = {
+
+    if (!cls.name.isDefined) return None
+    val name = cls.name.get
+    if (tagfile.resolveType(name).isDefined) {
+      return tagfile.resolveType(name)
+    } else {
+      None
     }
   }
 
@@ -192,35 +231,75 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver) extends Inser
     val e = resolver.resolveClassifierType(resolver.toSourceIdentifier(entityIdentifier))
     assert(e.isDefined, "Entity " + entityIdentifier + " is not classifier")
     if (e.get != ENUMERATION) {
+      /** enums are implemented as EMX datatypes*/
       if (e.get == CLASS || e.get == INTERFACE) {
 
         val desc = description.getOrElse("")
         val _classifier = resolver.resolve(resolver.toSourceIdentifier(classifierIdentifier))
-        if (! _classifier.isDefined ) {
-          logger.error("Classifier "+ resolver.toSourceIdentifier(classifierIdentifier)+" not found. Check "+sourceIdentifier)
+        if (!_classifier.isDefined) {
+          logger.error("Classifier " + resolver.toSourceIdentifier(classifierIdentifier) + " not found. Check " + sourceIdentifier)
         } else {
+          
           val classifier = _classifier.get.asInstanceOf[XClassifier]
-          val (dataType, refEnt, literals) = if (associationIdentifier.isDefined) {
+          val (dataType, refEnt, literals, isDatatypeConvertedToEMXEntity) = if (associationIdentifier.isDefined) {
             val refName = toQname(classifierIdentifier)
             if (!upperBound.isDefined || upperBound.get.equals("1") || upperBound.get.equals("0")) {
-              ("xref", refName, "")
+              ("xref", refName, "", None)
             } else {
               logger.debug("Multip: " + lowerBound + " -" + upperBound)
-              ("mref", refName, "")
+              ("mref", refName, "", false)
             }
           } else {
             if (classifier.entityType == ENUMERATION) {
-              ("enum", "", classifier.asInstanceOf[XEnumeration].literals.map { l => l.name.get }.mkString(","))
+              ("enum", "", classifier.asInstanceOf[XEnumeration].literals.map { l => l.name.get }.mkString(","), false)
             } else {
-              (classifierName.getOrElse("UNKNOWN"), "", "");
+              //this is  getting rather hacky.. 
+              val cls = resolveEXMDataType(classifier)
+              val (datatype, isDatatypeConvertedToEMXEntity)  = if (cls.isDefined) {
+                /** ok we were able to resolve the EMX data type*/
+                (cls.get, false)
+              } else {
+                /** datatype not resolved. Need to store it as EMX entity and make xref*/
+                val eType = classifier.entityType //class,interface,association, primitive...
+                val eTypeQualifier = if (classifier.isAbstract.getOrElse(false)) "abstract" else "concrete";
+                assert(classifier.parent.isDefined, "Entity do not belong to a package. Entity: " + classifier.id)
+                val pkgId = classifier.parent.get.id
+                def toOpt(str: String): Option[String] = {
+                  if (str == null || str == "") {
+                    None
+                  } else {
+                    Some(str)
+                  }
+                }
+                def comments(e: XNode): Option[String] = {
+                  val comm = resolver.commentsAsText(e.id)
+                  return toOpt(comm)
+                }
+                val gList = classifier.generalizationIds.map(x => resolver.pfix(x))
+                val rList = classifier.realizationIds.map(x => resolver.pfix(x))
+                insertEntity(resolver.pfix(classifier.id), classifier.name.get, classifier.id, comments(classifier), eType, eTypeQualifier, resolver.pfix(pkgId), None, gList, rList)
+                ("xref", true)
+              }
+              if ( isDatatypeConvertedToEMXEntity) {
+                val refName = toQname(classifierIdentifier)
+                ("xref",refName,"",true)                
+              } else {
+            	  (datatype, "", "", false);
+              }
             }
           }
           if (dataType == "enum") {
             val enum = classifier.asInstanceOf[XEnumeration]
             enum.literals.map { l => l.name.get }
           }
+
           val nillable = (if (upperBound.isDefined && upperBound.get.equals("0")) true else false).toString().toUpperCase();
-          val tags = (upperBound.map { p => tagLiteral(MAXVAL, p) } ++ lowerBound.map { p => tagLiteral(MINVAL, p) }).toList.mkString(",")
+
+          val tags = (
+            upperBound.map { p => tagLiteral(MAXVAL, p) } ++
+            lowerBound.map { p => tagLiteral(MINVAL, p) } ++
+            List(tagLiteral(SOURCEID, sourceIdentifier), tagLiteral(SOURCENAME, name))).toList.mkString(",")
+
           //logger.warn("Navi: " + dataType + " " + navigable.toString())
           val qname = toQname(entityIdentifier) + "." + name
           attributes.addRow(qname, toQname(entityIdentifier), dataType, refEnt, nillable, literals, "",
@@ -244,6 +323,8 @@ object Tag {
   val MAXVAL = "maxval"
   val REALIZATION = "realizationOf"
   val GENERALIZATON = "generalizationOf"
+  val SOURCEID = "sourceId"
+  val SOURCENAME = "sourceName"
   def apply(c: Config, objIri: String, objLabel: String, range: String) = new Tag(c.getString("iri"),
     c.getString("label"), objIri, objLabel, range)
 }
@@ -252,9 +333,14 @@ class EmxTags(fileName: String) {
   import Tag._
   val file = new File(fileName)
   val cfg = ConfigFactory.parseFile(file).resolve
-  val relations = List(MINVAL, MAXVAL, REALIZATION, GENERALIZATON)
+  val relations = List(MINVAL, MAXVAL, REALIZATION, GENERALIZATON, SOURCEID, SOURCENAME)
   val relation = Map(relations.map(r => (r, cfg.getConfig("tags.relation." + r))).toList: _*)
   def emxid(rel: String, target: Any) = relation.get(rel).get.getString("id") + ":" + target.toString()
+  def types = cfg.getStringList("emx.datatypes")
+  def typemap = Map(types.map { t => (t, t); }.toList: _*)
+  def resolveType(name: String): Option[String] = {
+    return typemap.get("x" + name.toLowerCase())
+  }
 
 }
 

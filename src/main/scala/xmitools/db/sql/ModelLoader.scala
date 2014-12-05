@@ -11,10 +11,13 @@ import xmitools.model.XNode
 import xmitools.model.XAssociation
 import xmitools.model.XProperty
 import xmitools.model.XInstance
-
-abstract class ModelLoader(val model: UMLModel, val prefix: String, val rootId: String,
+object LoaderUtils {
+  
+}
+abstract class ModelLoader(val modelName: String, val model: UMLModel, val prefix: String, val rootId: String,
   val contextId: String , val contextName: String, val contextDesc: String) extends DataCleaner {
-
+  import LoaderUtils._
+  
   lazy val resolver = model.createResolver
 
   val entityMap = new HashMap[String, String]()

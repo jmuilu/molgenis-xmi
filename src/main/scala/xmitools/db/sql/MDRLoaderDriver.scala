@@ -4,6 +4,7 @@ import xmitools.model.XMIVersionHandler
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import java.io.File
+import xmitools.db.emx.EmxTags
 
 class MDRLoaderDriver {
   import scala.collection.JavaConversions._
@@ -17,6 +18,7 @@ class MDRLoaderDriver {
       case "EA_XMI21" => XMIVersionHandler.EA_XMI21;
       case "ECLIPSE_20110701" => XMIVersionHandler.ECLIPSE_20110701
       case "ECLIPSE_2.0" => XMIVersionHandler.ECLIPSE_2_0
+      case "ECLIPSE_2_1" => XMIVersionHandler.ECLIPSE_2_1
             case _ => throw new RuntimeException("Unknown hander " + handlerId);
     }
   }
@@ -37,14 +39,15 @@ class MDRLoaderDriver {
       f =>
         println("Loading..." + f.getString("file") + " ")
         if (emx.isDefined) { //todo: fix hack
+          val tagfile = EmxTags(cfg.getString("emx.tags") )
           val fileName = emx.get + "_" + f.getString("sourceName") + ".xlsx"
-          val loader = MDRDbLoader(f.getString("file"), f.getString("namespace"), f.getString("submission"), f.getString("source"),
+          val loader = MDRDbLoader(f.getString("sourceName"),f.getString("file"), f.getString("namespace"), f.getString("submission"), f.getString("source"),
             f.getString("sourceName"), f.getString("sourceDescription"),
-            resolveXMIHander(f.getString("XMI")), fileName)
+            resolveXMIHander(f.getString("XMI")), fileName, tagfile)
           loader.loadAll()
           loader.close()
         } else {
-          val loader = MDRDbLoader(f.getString("file"), f.getString("namespace"), f.getString("submission"), f.getString("source"),
+          val loader = MDRDbLoader(f.getString("sourceName"),f.getString("file"), f.getString("namespace"), f.getString("submission"), f.getString("source"),
             f.getString("sourceName"), f.getString("sourceDescription"),
             resolveXMIHander(f.getString("XMI")))
           loader.loadAll()

@@ -39,7 +39,7 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler, nameSpace: String ) extends
     }
 
   }
-  
+
   def pfix(id: String): String = {
     if (id != null && !id.isEmpty()) return nameSpace +":" + id;
     else return ""

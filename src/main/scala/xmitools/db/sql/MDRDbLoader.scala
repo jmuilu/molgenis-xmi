@@ -8,9 +8,11 @@ import xmitools.model.XProperty
 import xmitools.model.XInstance
 import scala.xml.Elem
 import xmitools.db.emx.EmxInsertHandler
+import xmitools.db.emx.EmxTags
 
 trait InsertHandler {
-
+ 
+  
   def insertPackage(identifier: String, name: String, sourceIdentifier: String, description: Option[String],
     parentPackageIdentifier: Option[String], namespaceIdentifier: String);
 
@@ -27,10 +29,10 @@ trait InsertHandler {
 
 }
 
-class MDRDbLoader(model: UMLModel, prefix: String, rootId: String,
+class MDRDbLoader(modelName: String,  model: UMLModel, prefix: String, rootId: String,
   contextId: String, contextName: String, contextDesc: String,
-  iHandler: InsertHandler) extends ModelLoader(model, prefix, rootId, contextId, contextName, contextDesc) {
-
+  iHandler: InsertHandler) extends ModelLoader(modelName, model, prefix, rootId, contextId, contextName, contextDesc) {
+  
   def insertContext(contextId: String, name: String, description: String) = {
     iHandler.insertPackage(pfix(contextId), name, contextId, toOpt(description), None, prefix);
   }
@@ -54,9 +56,9 @@ class MDRDbLoader(model: UMLModel, prefix: String, rootId: String,
     val eTypeQualifier = if (e.isAbstract.getOrElse(false)) "abstract" else "concrete";
     assert(e.parent.isDefined, "Entity do not belong to a package. Entity: " + e.id)
     val pkgId = e.parent.get.id
-    val gList = e.generalizationIds.map(x => pfix(x))
-    val rList = e.realizationIds.map(x => pfix(x))
-    iHandler.insertEntity(pfix(e.id), getOpt(e.name), e.id, comments(e), eType, eTypeQualifier, pfix(pkgId), None, gList, rList)
+    val gList = e.generalizationIds.map(x => resolver.pfix(x))
+    val rList = e.realizationIds.map(x => resolver.pfix(x))
+    iHandler.insertEntity(resolver.pfix(e.id), getOpt(e.name), e.id, comments(e), eType, eTypeQualifier, resolver.pfix(pkgId), None, gList, rList)
   }
 
   def insertPropertyOwnByNonAssociationEntity(p: XProperty) = {
@@ -126,35 +128,35 @@ class MDRDbLoader(model: UMLModel, prefix: String, rootId: String,
 
 object MDRDbLoader {
 
-  def apply(file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
+  def apply(modelName: String,  file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
     vsHandler: XMIVersionHandler): MDRDbLoader = {
     vsHandler.setRootId(submissionIdSource)
     val xmi = scala.xml.XML.loadFile(file)
     val model = UMLModel(xmi, prefix)(vsHandler)
     val iHandler = new MDRDbInsertHanlder()
-    return new MDRDbLoader(model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
+    return new MDRDbLoader(modelName, model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
   }
 
-  def apply(file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
-    vsHandler: XMIVersionHandler, fileName: String): MDRDbLoader = {
+  def apply(modelName: String, file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
+    vsHandler: XMIVersionHandler, fileName: String, tags: EmxTags): MDRDbLoader = {
     vsHandler.setRootId(submissionIdSource)
     val xmi = scala.xml.XML.loadFile(file)
     val model = UMLModel(xmi, prefix)(vsHandler)
-    val iHandler = new EmxInsertHandler(fileName, model.createResolver) //todo fix hack. The handler should not use resolver. Also apply method is not used properly 
-    return new MDRDbLoader(model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
+    val iHandler = new EmxInsertHandler(fileName, model.createResolver,tags, modelName) //tod: fix hack. The handler should not use resolver. Also apply method is not used properly 
+    return new MDRDbLoader(modelName, model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
   }
 
-  def apply(file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
+  def apply(modelName:String,file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
     vsHandler: XMIVersionHandler, iHandler: InsertHandler): MDRDbLoader = {
     vsHandler.setRootId(submissionIdSource)
     val xmi = scala.xml.XML.loadFile(file)
     val model = UMLModel(xmi, prefix)(vsHandler)
-    return new MDRDbLoader(model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
+    return new MDRDbLoader(modelName,model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
   }
 
-  def apply(file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
+  def apply(modelName: String, file: String, prefix: String, submissionIdSource: String, contextId: String, contextName: String, contextDesc: String,
     vsHandler: XMIVersionHandler, iHandler: InsertHandler, xmi: Elem, model: UMLModel): MDRDbLoader = {
-    return new MDRDbLoader(model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
+    return new MDRDbLoader(modelName, model, prefix, submissionIdSource, contextId, contextName, contextDesc, iHandler)
   }
 
   def main(args: Array[String]): Unit = {

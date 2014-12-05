@@ -17,7 +17,7 @@ trait DataCleaner extends LazyLogging {
   def isMoreThanOne(multiplicity: Option[String]): Boolean = {
     if (multiplicity.isDefined) {
       val m = multiplicity.get
-      if (m == "*") {
+      if (m == "*" || m == "-1") {
         true
       } else {
         if (m.matches("\\d+") && Integer.parseInt(m) > 1) {
@@ -35,9 +35,9 @@ trait DataCleaner extends LazyLogging {
     if (multiplicity.isDefined) {
       val m = multiplicity.get
       if (m == "*") {
-        true
+        false
       } else {
-        if (m.matches("\\d+") && Integer.parseInt(m) == 1) {
+        if (m.matches("\\d+") && Integer.parseInt(m) == 0) {
           true
         } else {
           false

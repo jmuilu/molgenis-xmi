@@ -3,7 +3,18 @@ import scala.xml.Elem
 import scala.xml.NodeSeq
 import scala.xml.Node
 import com.typesafe.scalalogging.slf4j.LazyLogging
+import java.util.UUID
 
+class EclipseXMIVersionHandler21(XMI: Ns, UML: Ns, version: String = "") extends EclipseXMIVersionHandler(XMI, UML, version) {
+
+  import Ns._
+  override def getRootPackageNode(elem: Elem): Node = {
+    return (elem \ "Model").head;
+  }
+
+} 
+  
+  
 class EclipseXMIVersionHandler(XMI: Ns, UML: Ns, version: String = "") extends XMIVersionHandler(XMI, UML, version) {
 
   import Ns._
@@ -13,7 +24,12 @@ class EclipseXMIVersionHandler(XMI: Ns, UML: Ns, version: String = "") extends X
 
   override def parseId(currentNode: XNode): String = {
     val n = currentNode.n;
-    assert(n.attribute(XMI, "id").isDefined, "XMI element do not have id. "+ n.toString().substring(0,10))
+    if ( !n.attribute(XMI, "id").isDefined ) {
+      val uuid = UUID.randomUUID().toString()
+      logger.warn("XMI element do not have id. Using "+uuid)
+      return uuid
+    }
+    //assert(n.attribute(XMI, "id").isDefined, "XMI element do not have id. "+ n.toString().substring(0,10))
     val id = n.attribute(XMI, "id").get
     assert(!id.isEmpty, "XMI element do not have id")
     return id.text

@@ -483,7 +483,7 @@ object UMLModel {
     if (vs.version != "") {
       val v = x.attribute(vs.XMI, "version")
       assert(v.isDefined, "XMI not supported. Wrong version")
-      assert(v.get.text == vs.version, "XMI not supported. Wrong version " + v.get.text)
+      assert(v.get.text == vs.version, "XMI not supported. Wrong version " + v.get.text+ " was "+vs.version)
     }
     new UMLModel(vs.getRootPackageNode(x), x, nameSpace)(vs)
   }
