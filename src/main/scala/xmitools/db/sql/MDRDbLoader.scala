@@ -122,6 +122,12 @@ class MDRDbLoader(modelName: String,  model: UMLModel, prefix: String, rootId: S
   }
 
   def close() = {
+    logger.info("Packages: "+model.allPackages.size)
+    model.allPackages.foreach {
+      p=>
+      logger.info("Package: "+p.name.get)
+      logger.info("Children: "+p.children.size)
+    }
     iHandler.close
   }
 }

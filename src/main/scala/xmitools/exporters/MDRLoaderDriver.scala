@@ -1,10 +1,11 @@
-package xmitools.db.sql
+package xmitools.exporters
 
 import xmitools.model.XMIVersionHandler
-import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import java.io.File
 import xmitools.db.emx.EmxTags
+import scala.collection.JavaConversions.asScalaBuffer
+import xmitools.db.sql._
 
 class MDRLoaderDriver {
   import scala.collection.JavaConversions._

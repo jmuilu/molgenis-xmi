@@ -12,28 +12,22 @@ class EclipseXMIVersionHandler21(XMI: Ns, UML: Ns, version: String = "") extends
     return (elem \ "Model").head;
   }
 
-} 
-  
-  
+}
+
 class EclipseXMIVersionHandler(XMI: Ns, UML: Ns, version: String = "") extends XMIVersionHandler(XMI, UML, version) {
 
   import Ns._
   override def getRootPackageNode(elem: Elem): Node = {
     return elem;
   }
-
   override def parseId(currentNode: XNode): String = {
     val n = currentNode.n;
-    if ( !n.attribute(XMI, "id").isDefined ) {
-      val uuid = UUID.randomUUID().toString()
-      logger.warn("XMI element do not have id. Using "+uuid)
-      return uuid
-    }
-    //assert(n.attribute(XMI, "id").isDefined, "XMI element do not have id. "+ n.toString().substring(0,10))
+    assert(n.attribute(XMI, "id").isDefined, "XMI element do not have id. " + n.toString().substring(0, 10))
     val id = n.attribute(XMI, "id").get
     assert(!id.isEmpty, "XMI element do not have id")
     return id.text
   }
+
 
   override def parseAttributeType(currentNode: XNode): Option[String] = {
     val n = currentNode.n
