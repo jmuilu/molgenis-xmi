@@ -55,6 +55,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
   val attributes = workbook.createSheet("attributes")
   val tags = workbook.createSheet("tags")
   val tagMap = new HashMap[String, Tag]();
+  val associationMap = new HashMap[String,String]();
 
   val entityNameMap = new HashMap[String, Int]()
   val entityIdMap = new HashMap[String, String]()
@@ -111,10 +112,11 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
       logger.warn("ID " + id + " not resolved")
       return id
     }
-    //val qn = e.get.qualifiedName
-    val qn = e.get.name
+    val qn = e.get.qualifiedName
+    //val qn = e.get.name
     toEMXName(if (qn.isDefined) {
-      modelName + "_" + qn.get
+      //modelName + "_" + qn.get.replace(".", "_")
+      qn.get.replace(".", "_")
     } else {
       logger.warn("Entity do not have name. Id used instead" + id)
       id
@@ -227,7 +229,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
 
     } else {
       if (e.get == PRIMITIVE) {
-        logger.warn("Primitives handled differenlty")
+        logger.warn("Primitives are handled differenlty")
       } else {
         if (e.get != ASSOCIATION) logger.warn("Following entities are ignored...: " + e.get)
       }
@@ -276,8 +278,28 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
     classifierIdentifier: String, classifierName: Option[String],
     associationIdentifier: Option[String], lowerBound: Option[String],
     upperBound: Option[String], navigable: Boolean,
-    aggregation: Option[String]) = {
+    aggregation: Option[String]) : Unit  = {
 
+    if ( associationIdentifier.isDefined) {
+      //added 25.1.2015 because EMX cannot handle bi-directional associations
+      val otherEnd = resolver.resolveOtherEndOfBinaryAssociation( resolver.toSourceIdentifier( associationIdentifier.get), 
+          resolver.toSourceIdentifier(identifier))
+      assert(otherEnd.isDefined,"Association must have other end also")
+      val p = otherEnd.get
+      if ( associationMap.isDefinedAt( p.id)) {
+        logger.info("Association "+identifier+" skipped because other end is exported alredy")
+        return
+      }
+      if ( p.isNavigable.isDefined || p.isNavigable.get) {
+        logger.info("Association "+identifier+" skipped because other end is defined and it is navigable")
+        return        
+      }
+      // ok we just do not care is this attribute navigable or not
+      associationMap.put(sourceIdentifier,"DONE")
+      if ( ! navigable) {
+        logger.info("Non navigable association converted to an EMX association")
+      }
+    }
     val e = resolver.resolveClassifierType(resolver.toSourceIdentifier(entityIdentifier))
     assert(e.isDefined, "Entity " + entityIdentifier + " is not classifier")
     if (e.get != ENUMERATION) {
@@ -292,6 +314,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
 
           val classifier = _classifier.get.asInstanceOf[XClassifier]
           val (dataType, refEnt, literals, isDatatypeConvertedToEMXEntity) = if (associationIdentifier.isDefined) {
+            // associations:
             val refName = toQname(classifierIdentifier)
             if (!upperBound.isDefined || upperBound.get.equals("1") || upperBound.get.equals("0")) {
               ("xref", refName, "", None)
@@ -300,6 +323,7 @@ class EmxInsertHandler(val fileName: String, resolver: IDResolver, tagfile: EmxT
               ("mref", refName, "", false)
             }
           } else {
+            //attributes
             if (classifier.entityType == ENUMERATION) {
               ("enum", "", classifier.asInstanceOf[XEnumeration].literals.map { l => l.name.get }.mkString(","), false)
             } else {

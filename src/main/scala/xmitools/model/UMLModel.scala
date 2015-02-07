@@ -20,7 +20,7 @@ import com.typesafe.scalalogging.slf4j.LazyLogging
  * http://www.omg.org/spec/XMI/
  * 
  * Notes:
- * Parsing will be moved into separate version handler, when need arises.
+ * Parsing of will be moved into separate version handler, when need arises.
  * 
  * */
 

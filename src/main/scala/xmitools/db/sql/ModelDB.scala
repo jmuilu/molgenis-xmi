@@ -18,7 +18,7 @@ class ModelDB {
     def description = column[Option[String]]("description",O.DBType("TEXT"))
     def parentPackageIdentifier = column[Option[String]]("parentPackageIdentifier")
     def pkgIdx = index("packagePackageIdx", (parentPackageIdentifier), unique = false)
-    def * = (name, identifier, sourceIdentifier, description, parentPackageIdentifier, namespaceIdentifier)
+    def * = (identifier, name, sourceIdentifier, description, parentPackageIdentifier, namespaceIdentifier)
   }
   val packages = TableQuery[MDRPackage]
 

@@ -8,14 +8,14 @@ import xmitools.model.XProperty
 import xmitools.model.XInstance
 import scala.xml.Elem
 import xmitools.db.emx.EmxInsertHandler
+import com.typesafe.scalalogging.slf4j.LazyLogging
  
-class MDRDbInsertHanlder extends InsertHandler {
+class MDRDbInsertHanlder extends InsertHandler with LazyLogging {
 	  import scala.slick.driver.MySQLDriver.simple._
 	  val DB = new ModelDB
 
 	  def insertPackage(identifier: String, name: String, sourceIdentifier: String, description: Option[String],
 	    parentPackageIdentifier: Option[String], namespaceIdentifier: String) = {
-
 	    DB.DB.withSession {
 	      implicit session =>
 	        DB.packages += (identifier, name, sourceIdentifier, description, parentPackageIdentifier, namespaceIdentifier);
@@ -34,7 +34,6 @@ class MDRDbInsertHanlder extends InsertHandler {
 	          DB.entityExtends += (identifier, x)
 	        }
 	    }
-
 	  }
 
 	  def insertAttribute(identifier: String, name: String, sourceIdentifier: String, description: Option[String],
@@ -49,7 +48,6 @@ class MDRDbInsertHanlder extends InsertHandler {
 	        DB.attributes += (identifier, name, sourceIdentifier, description, typeCv, typeQualifierCv, entityIdentifier,
 	          classifierIdentifier, associationIdentifier, lowerBound, upperBound, navigable, aggregation);
 	    }
-
 	  }
 	  
 	  def close = {

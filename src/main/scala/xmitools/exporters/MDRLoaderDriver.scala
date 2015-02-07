@@ -65,7 +65,7 @@ object MDRLoaderDriver {
     //assert(args.length == 1,"Usage: MDRLoaderDriver diverfile")
 
     val drive = MDRLoaderDriver()
-    drive.load("src/test/resources/loaderBatch_simple.conf")
+    drive.load("src/test/resources/loaderBatch.conf")
 
   }
 }

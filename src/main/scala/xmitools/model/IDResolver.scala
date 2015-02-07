@@ -44,6 +44,7 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler, nameSpace: String ) extends
     if (id != null && !id.isEmpty()) return nameSpace +":" + id;
     else return ""
   }
+  
   def toSourceIdentifier( id: String) : String = {
     return id.replaceFirst(nameSpace+":", "")
   }
@@ -111,7 +112,7 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler, nameSpace: String ) extends
 
    def createSubClassMap(x: XPackage): Map[String, List[DirectedRelationship]] = {
 
-    // remeber to take this package as well     
+    // remember to take this package as well     
     val generalizations = (x :: x.allSubPackages).flatMap(f => f.entities.flatMap { e => e.generalizations.asInstanceOf[List[DirectedRelationship]] }) 
     val realizations = (x :: x.allSubPackages).flatMap(f => f.entities.flatMap { e => e.realizations .asInstanceOf[List[DirectedRelationship]] }) 
     val list = (realizations ++ generalizations).map {
@@ -188,7 +189,6 @@ class IDResolver(n: XPackage, vs: XMIVersionHandler, nameSpace: String ) extends
     } else {
       assert(false, "Cannot resolve association end. Association " + associationId)
       return None
-
     }
   }
 

@@ -1,14 +1,12 @@
-package xmitools.exporters
+package xmitools.db.sql
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import xmitools.model.XClassifier
-import xmitools.model.DirectedRelationship
 import xmitools.model.XProperty
 import java.beans.Introspector
 import xmitools.model.XNode
 
 trait DataCleaner extends LazyLogging {
-
+ 
   val UNKNOWN = "undefined"
   val UNBOUND = "-1"
   def P(x: String): String = x.replaceAll("\\s+", " ")

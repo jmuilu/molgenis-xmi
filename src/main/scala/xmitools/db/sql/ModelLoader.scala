@@ -1,6 +1,6 @@
 package xmitools.db.sql
 
-import xmitools.exporters.DataCleaner
+import xmitools.db.sql.DataCleaner
 import xmitools.model.XMIVersionHandler
 import xmitools.model.UMLModel
 import xmitools.model.XPackage
@@ -39,7 +39,6 @@ abstract class ModelLoader(val modelName: String, val model: UMLModel, val prefi
   }
 
   def load(pkg: XPackage, rootIdentifier: String): Unit = {
-
     insert(pkg, rootIdentifier)
     (pkg.subPackages).foreach {
       p =>
@@ -47,7 +46,6 @@ abstract class ModelLoader(val modelName: String, val model: UMLModel, val prefi
         assert(pkg.id == p.parent.get.id)
         load(p, pkg.id)
     }
-
   }
 
   def loadEntity(e: XClassifier): Unit = {
